@@ -22,18 +22,27 @@ var connection = mysql.createConnection({
 app.post("/signup", function (req, res) {
 	var q1=req.body.email;
 	var q2=req.body.password;
-	
-	
-	
 	result  = connection.query('INSERT INTO `Member`(`email`, `password`) VALUES ("'+q1+'","'+q2+'")', function (error, results, fields) {
 		if(error){res.end(error.code)}else{
 			res.end("Successfully registered: "+q1);
 		}
 	});
-	
-	
-	
 });
+
+app.post("/signin", function (req, res) {
+	var q1=req.body.email;
+	var q2=req.body.password;
+	result  = connection.query('SELECT * FROM `Member` WHERE `email` = "'+q1+'"', function (error, results, fields) {
+		if(error){res.end(error.code)}else{
+			if(results[0].password == q2){
+				res.end("success");
+			}else{
+				res.end("failed")
+			}
+		}
+	});
+});
+
 
 
 app.listen(3000, function () {
