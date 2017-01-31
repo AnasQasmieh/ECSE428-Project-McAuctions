@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/NeveTM/ECSE428-Project-McAuctions#readme",
   "dependencies": {
-    "express": "^4.14.1"
+    "body-parser": "^1.16.0",
+    "express": "^4.14.1",
+    "mysql": "^2.13.0"
   }
 }
