@@ -18,6 +18,23 @@ var connection = mysql.createConnection({
 
 
 
+app.post("/addItem", function (req, res) {
+
+	var email  =""+req.body.email;
+    var title  =""+req.body.title;
+    var price  =""+req.body.price;
+    var description  =""+req.body.description
+    var type  =""+req.body.type;
+    var date =""+req.body.date;
+
+	
+	result  = connection.query('INSERT INTO `Item`(`email`, `title`,`price`,`description`,`type`,`date`) VALUES ("'+email+'","'+title+'","'+price+'","'+description+'","'+type+'","'+date+'")', function (error, results, fields) {
+		if(error){res.end(error)}else{
+			res.end("Successfully registered: "+title);
+		}
+	});
+});
+
 
 app.post("/signup", function (req, res) {
 	var q1=req.body.email;

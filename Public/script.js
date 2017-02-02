@@ -15,7 +15,7 @@ app.config(function($routeProvider) {
     .when("/Advanced_Search", {
         templateUrl : "Page/Advanced_Search.html"
     })
-     .when("/About", {
+    .when("/About", {
         templateUrl : "Page/About.html"
     })
     .when("/My_Sales", {
@@ -27,11 +27,14 @@ app.config(function($routeProvider) {
     .when("/Sign_Up", {
         templateUrl : "Page/Sign_Up.html"
     })
-     .when("/Search_Results", {
+    .when("/Search_Results", {
         templateUrl : "Page/Search_Results.html"
     })
- 
-   
+    .when("/New_Sale", {
+        templateUrl : "Page/New_Sale.html"
+    })
+
+
 });
 
 $( document ).ready(function() {
@@ -41,10 +44,38 @@ $( document ).ready(function() {
     if(cookie.length>1){
         signedIn();
     }
+    checkType();
+
 });
 
+
+function checkType(){
+    if ($("#auctionRadio").is(':checked')){
+        $("#newSaleForm .date").fadeIn();
+    }else{
+        $("#newSaleForm .date").fadeOut();
+    }
+}
+
+
+
+function uploadSale(){
+    var email  = ""+ getCookieValue("email");
+    var title  = ""+$("#newSaleForm .title").val();
+    var price  = ""+$("#newSaleForm .price").val();
+    var description  = ""+$("#newSaleForm .description").val();
+    var type  = ""+$("input[name='type']:checked").val();
+    var date = ""+$("input[name='date']").val();
+    var packet = {email:email, title:title,price:price,description:description,type:type,date:date};
+    var stringPacket = JSON.stringify(packet);
+    console.log("sending packet:"+ stringPacket);
+    $.ajax({url: "addItem", type: 'POST', cache: false,  data: packet, success: function(result){console.log(result)}});
+    
+}
+
+
 function signUp(){
-    var email  = $("#signUpForm .email").val();
+    var email  =$("#newSaleForm .email").val();
     var password  = $("#signUpForm .password").val();
     if(password!=$("#signUpForm .confirmPassword").val()){
         console.log("password confirmation error not handled");
@@ -73,7 +104,6 @@ function signedIn(){
     $(".postLogin").fadeIn(100);
     $(".preLogin").fadeOut(100);
     window.location.hash = '';
-
     console.log("signed in as :"+getCookieValue("email"));
 }
 

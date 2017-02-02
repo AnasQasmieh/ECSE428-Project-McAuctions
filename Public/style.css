@@ -1,5 +1,7 @@
 body{
 	background-color: grey;
+	/*display: inline-block;*/
+	text-align: center;
 }
 h1{
 	color: white;

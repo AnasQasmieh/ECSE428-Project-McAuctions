@@ -1,0 +1,16 @@
+
+<form id="newSaleForm">
+<input type="text" name="title" placeholder="Item Title" class="title"><br>
+PRICE: <input type="number" name="price" min="0" class="price"> CA$<br>
+<textarea rows="4" cols="50" placeholder="Item Description" class="description"></textarea><br>
+
+<div id="radioHolder" onclick="checkType()">
+<input type="radio" name="type" value="fixed" class="type" checked> Fixed Price
+<input type="radio" name="type" class="type" id="auctionRadio" value="auction"> Best Offer<br><br>
+</div>
+<div class="date" style="display:none">Enter the date at will the auction will end and the item will be sold</div>
+<input type="date" name="date" class="date" style="display:none"><br>
+
+<hr>
+<button  onclick="uploadSale()" >Put on sale</button>	
+</form>
