@@ -27,11 +27,11 @@ app.post("/addItem", function (req, res) {
     var type  =""+req.body.type;
     var date =""+req.body.date;
 
-	
-	result  = connection.query('INSERT INTO `Item`(`email`, `title`,`price`,`description`,`type`,`date`) VALUES ("'+email+'","'+title+'","'+price+'","'+description+'","'+type+'","'+date+'")', function (error, results, fields) {
-		if(error){res.end(error)}else{
+connection.query('INSERT INTO `Item`(`email`, `title`,`price`,`description`,`type`,`date`) VALUES ("'+email+'","'+title+'","'+price+'","'+description+'","'+type+'","'+date+'")', function (error, results, fields) {
+		if(error){res.end(error.code)}else{
 			res.end("Successfully registered: "+title);
 		}
+		// if(error){throw error};
 	});
 });
 
@@ -56,6 +56,17 @@ app.post("/signin", function (req, res) {
 			}else{
 				res.end("failed")
 			}
+		}
+	});
+});
+
+app.post("/loadMyItems", function (req, res) {
+	var q1=req.body.email;
+		
+	result  = connection.query('SELECT * FROM `Item` WHERE `email` = "'+q1+'"', function (error, results, fields) {
+		if(error){res.end(error.code)}else{
+				res.end(JSON.stringify(results));
+			
 		}
 	});
 });
