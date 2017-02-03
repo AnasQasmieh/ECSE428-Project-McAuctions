@@ -16,18 +16,36 @@ var connection = mysql.createConnection({
 	database : 'sql9156464'
 })
 
+app.post("/getItems", function (req, res) {
 
+	var category  =""+req.body.category;
+	if(category=="any"){
+		connection.query('SELECT * FROM `Item`', function (error, results, fields) {
+			if(error){res.end(error.code)}else{
+				res.end(JSON.stringify(results));
 
+			}
+		});
+	}else{
+		connection.query('SELECT * FROM `Item`WHERE `category` = "'+category+'"', function (error, results, fields) {
+			if(error){res.end(error.code)}else{
+				res.end(JSON.stringify(results));
+
+			}
+		});
+	};
+});
 app.post("/addItem", function (req, res) {
 
 	var email  =""+req.body.email;
-    var title  =""+req.body.title;
-    var price  =""+req.body.price;
-    var description  =""+req.body.description
-    var type  =""+req.body.type;
-    var date =""+req.body.date;
+	var title  =""+req.body.title;
+	var price  =""+req.body.price;
+	var description  =""+req.body.description
+	var type  =""+req.body.type;
+	var date =""+req.body.date;
+	var category = ""+req.body.category;
 
-connection.query('INSERT INTO `Item`(`email`, `title`,`price`,`description`,`type`,`date`) VALUES ("'+email+'","'+title+'","'+price+'","'+description+'","'+type+'","'+date+'")', function (error, results, fields) {
+	connection.query('INSERT INTO `Item`(`email`, `title`,`price`,`description`,`type`,`date`,`category`) VALUES ("'+email+'","'+title+'","'+price+'","'+description+'","'+type+'","'+date+'","'+category+'")', function (error, results, fields) {
 		if(error){res.end(error.code)}else{
 			res.end("Successfully registered: "+title);
 		}
@@ -39,9 +57,18 @@ connection.query('INSERT INTO `Item`(`email`, `title`,`price`,`description`,`typ
 app.post("/signup", function (req, res) {
 	var q1=req.body.email;
 	var q2=req.body.password;
-	result  = connection.query('INSERT INTO `Member`(`email`, `password`) VALUES ("'+q1+'","'+q2+'")', function (error, results, fields) {
+	connection.query('INSERT INTO `Member`(`email`, `password`) VALUES ("'+q1+'","'+q2+'")', function (error, results, fields) {
 		if(error){res.end(error.code)}else{
 			res.end("Successfully registered: "+q1);
+		}
+	});
+});
+
+app.post("/removeItem", function (req, res) {
+	var itemID=req.body.itemID;
+	connection.query('DELETE FROM `Item` WHERE  `Item`.`itemID` ='+itemID+';', function (error, results, fields) {
+		if(error){res.end(error.code)}else{
+			res.end("success");
 		}
 	});
 });
@@ -62,11 +89,11 @@ app.post("/signin", function (req, res) {
 
 app.post("/loadMyItems", function (req, res) {
 	var q1=req.body.email;
-		
+
 	result  = connection.query('SELECT * FROM `Item` WHERE `email` = "'+q1+'"', function (error, results, fields) {
 		if(error){res.end(error.code)}else{
-				res.end(JSON.stringify(results));
-			
+			res.end(JSON.stringify(results));
+
 		}
 	});
 });

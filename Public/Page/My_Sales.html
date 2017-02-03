@@ -4,7 +4,8 @@
 
 
 <hr>
-
+<button onclick="loadMyItems()">Refresh</button>
+<hr>
 <div id="myFixedItemHolder">
 	
 </div>
@@ -12,15 +13,18 @@
 <div id="itemWrapperTemplate" style="display:none">
 	
 	<div class="itemWrapper">
-		<span class="id" style="display:none"></span> 
 		<span class="price"></span> 
 		<span class="title"></span> <br>
-		description:<br><span class="description"></span> <br>
+		Category : <span class="category"></span> <br>
+		Description  <span class="description"></span> <br>
 		<span class="auction">
-		End Date: <span class="date"></span> <br>
-		Buyer: <button class="buyer">none</button> 
+		End Date : <span class="date"></span> <br>
+		Buyer : <button class="buyer">none</button> 
 		</span>
-		<br><button>remove sale</button>
+		<br>
+		<!-- <input type="button" value="Update Sale" name="someID"  class="bid" onclick="updateMySale(this)"> -->
+		<input type="button" value="Remove Sale" name="someID"  class="bid" onclick="removeMySale(this)"> 
+		
 		<hr>
 	</div>
 

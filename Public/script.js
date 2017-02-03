@@ -1,4 +1,4 @@
-    
+   var displayedItems; 
 
 /*
 =========================
@@ -47,6 +47,62 @@ $( document ).ready(function() {
 
 
 });
+
+function displayCategory(category){
+
+   getItems(category);
+   
+
+}
+
+
+
+function  displayItems(count){
+    while(count>0 && displayedItems.length!=0){
+        var item = displayedItems.pop();
+         var s = $(".itemHolder").html() + $("#itemWrapperTemplate").html();
+            $(".itemHolder").html(s);
+        $(".itemWrapper:last  .title").html(item.title);
+        $(".itemWrapper:last  .price").html(item.price);
+        $(".itemWrapper:last  .owner").html(item.email);
+        $(".itemWrapper:last  .description").html(item.description);
+        $(".itemWrapper:last  .date").html(getItemDateString(item));
+        if(item.type =="fixed"){
+            $(".itemWrapper:last  .auction").html("");
+        }
+
+        count--;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function getItems(category){
+    $.ajax({
+            url: "getItems", type: 'POST', cache: false,  data: {category:category}, success: function(result){
+               console.log(result);
+                displayedItems =JSON.parse(result);
+                 $(".itemHolder").html("");
+                displayItems(15);
+            }
+
+        });
+}
+
+
 function loadMyItems(){
     console.log("Loading my  items");
     $("#myItemHolder").html("hello") ;
@@ -55,7 +111,6 @@ function loadMyItems(){
 
     $.ajax({
         url: "loadMyItems", type: 'POST', cache: false,  data:{email:getCookieValue("email") }, success: function(result){
-            console.log(result);
             var q = JSON.parse(result);
             var s = "";
             for(var i = 0 ; i < q.length; i++){
@@ -65,23 +120,44 @@ function loadMyItems(){
             for(var i = 0 ; i < q.length; i++){
 
                $(".itemwrapper:eq("+i+") .id").html(q[i].itemID);
+               $(".itemwrapper:eq("+i+") .bid").attr('name', q[i].itemID);
+               $(".itemwrapper:eq("+i+") .id").html(q[i].itemID);
+               $(".itemwrapper:eq("+i+") .category").html(q[i].category);
                $(".itemwrapper:eq("+i+")  .title").html(q[i].title);
                $(".description:eq("+i+")").html(q[i].description);
                $(".price:eq("+i+")").html(q[i].price+" CA$ ");
-               var d = q[i].date.split("T")[0];
-              
-               $(".itemwrapper:eq("+i+")  .date").html(d+" ("+getDaysTo(d)+" days left)");
+            
+
+               $(".itemwrapper:eq("+i+")  .date").html(getItemDateString(q[i]));
                $(".itemwrapper:eq("+i+")  .buyer").html(q[i].buyer);
 
                if(q[i].type =="fixed"){
                 $(".auction:eq("+i+")").html("");
-               }
-             
-           }
+            }
+        }
+    }
+});
+}
 
-       }
-   });
+function getItemDateString( item ){
+    var d = item.date.split("T")[0];
+   return  d+" ("+getDaysTo(d)+" days left)";
+}
 
+function updateMySale(b){
+    console.log(""+$(b).attr('name'));
+    
+}
+function removeMySale(b){
+    console.log(""+$(b).attr('name'));
+    var itemID = $(b).attr('name');
+     $.ajax({url: "removeItem", type: 'POST', cache: false,  data: {itemID:itemID}, success: function(result){
+        if(result == "success"){
+                    loadMyItems();
+                }else{
+                    console.log("==>"+result);
+                }
+    }});
 
 }
 
@@ -94,11 +170,11 @@ function checkType(){
 }
 
 function getDaysTo(date){
-        var end = new Date(date);
-               var today=new Date();
-                var one_day=1000*60*60*24;
-                var daysLeft = Math.ceil((end.getTime()-today.getTime())/(one_day));
-                return daysLeft;
+    var end = new Date(date);
+    var today=new Date();
+    var one_day=1000*60*60*24;
+    var daysLeft = Math.ceil((end.getTime()-today.getTime())/(one_day));
+    return daysLeft;
 }
 
 
@@ -110,13 +186,14 @@ function uploadSale(){
     var description  = ""+$("#newSaleForm .description").val();
     var type  = ""+$("input[name='type']:checked").val();
     var date = ""+$("input[name='date']").val();
-    console.log("---->"+date);
-    var packet = {email:email, title:title,price:price,description:description,type:type,date:date};
+    var category = ""+$("select[name='category']").find(":selected").text();
+    console.log("---->"+category);
+    var packet = {email:email, title:title,price:price,description:description,category:category,type:type,date:date};
     var stringPacket = JSON.stringify(packet);
     console.log("sending packet:"+ stringPacket);
     $.ajax({url: "addItem", type: 'POST', cache: false,  data: packet, success: function(result){
         console.log(result);
-        window.location.hash = '';
+        // window.location.hash = '';
     }});
     
 }
