@@ -53,6 +53,21 @@ app.post("/addItem", function (req, res) {
 	});
 });
 
+app.post("/bid", function (req, res) {
+
+	var itemID  =""+req.body.itemID;
+	var price  =""+req.body.price;
+	var buyer  =""+req.body.buyer
+
+
+	connection.query('UPDATE `Item` Set `price`="'+price+'",`buyer`="'+buyer+'" WHERE `itemID`="'+itemID+'"', function (error, results, fields) {
+		if(error){res.end(error.code)}else{
+			res.end("success");
+		}
+		// if(error){throw error};
+	});
+});
+
 
 app.post("/signup", function (req, res) {
 	var q1=req.body.email;

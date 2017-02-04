@@ -38,6 +38,11 @@ app.config(function($routeProvider) {
 });
 
 $( document ).ready(function() {
+
+    console.log(document.location.hash);
+    if(document.location.hash=="#/"){
+        displayCategory("any");
+    }
     var cookie = "";
     cookie +=document.cookie
     console.log( "cookie["+cookie+"]" );
@@ -47,11 +52,58 @@ $( document ).ready(function() {
 
 
 });
+function omniSearch(){
+    document.location.hash = "#/";
+    var category = "any";
+    var search = $(".omniBar").val();
+    var splitSearch = search.split(" ");
+    console.log(splitSearch);
+    $.ajax({
+        url: "getItems", type: 'POST', cache: false,  data: {category:category}, success: function(result){
+        list  = JSON.parse(result);
+        displayedItems = [];
+         while(list.length>0){
+            var keep = false;
+            var i = list.pop()
+            for ( var j =0; j<splitSearch.length ; j++ ){
+                if( i.title.includes(splitSearch[j])  ){
+                    displayedItems.unshift(i);
+                }else if(  i.description.includes(splitSearch[j]) ){
+                    displayedItems.push(i);
+                }
+            }
+         }
+         $(".itemHolder").html("");
+         displayItems(15);
+     }
+
+});
+}
+
+
+
+function bid(b){
+ parent = b.parentNode.parentNode;
+ currentPrice = $(parent).find(".price").html();
+ newPrice = $(parent).find(".newPrice").val();
+ minPrice = Math.ceil(currentPrice *105/100);
+ itemID = $(b).attr('name');
+ buyer = getCookieValue("email");
+ if(minPrice > newPrice){
+    alert("The minimum bid is: \n"+minPrice+"\nYour offer has been refused");
+}else{
+     console.log("c="+currentPrice+"--n="+newPrice+"--id="+itemID+"--buyer="+buyer);
+    $.ajax({url: "bid", type: 'POST', cache: false,  data: {itemID:itemID, price:newPrice, buyer:buyer}, success: function(result){
+       location.reload();
+    }});
+}
+
+}
 
 function displayCategory(category){
 
-   getItems(category);
-   
+ getItems(category);
+
 
 }
 
@@ -60,13 +112,14 @@ function displayCategory(category){
 function  displayItems(count){
     while(count>0 && displayedItems.length!=0){
         var item = displayedItems.pop();
-         var s = $(".itemHolder").html() + $("#itemWrapperTemplate").html();
-            $(".itemHolder").html(s);
+        var s = $(".itemHolder").html() + $("#itemWrapperTemplate").html();
+        $(".itemHolder").html(s);
         $(".itemWrapper:last  .title").html(item.title);
         $(".itemWrapper:last  .price").html(item.price);
         $(".itemWrapper:last  .owner").html(item.email);
         $(".itemWrapper:last  .description").html(item.description);
         $(".itemWrapper:last  .date").html(getItemDateString(item));
+        $(".itemWrapper:last  .bid").attr('name', item.itemID);
         if(item.type =="fixed"){
             $(".itemWrapper:last  .auction").html("");
         }
@@ -92,14 +145,14 @@ function  displayItems(count){
 
 function getItems(category){
     $.ajax({
-            url: "getItems", type: 'POST', cache: false,  data: {category:category}, success: function(result){
-               console.log(result);
-                displayedItems =JSON.parse(result);
-                 $(".itemHolder").html("");
-                displayItems(15);
-            }
+        url: "getItems", type: 'POST', cache: false,  data: {category:category}, success: function(result){
+         console.log(result);
+         displayedItems =JSON.parse(result);
+         $(".itemHolder").html("");
+         displayItems(15);
+     }
 
-        });
+ });
 }
 
 
@@ -119,19 +172,19 @@ function loadMyItems(){
             $("#myFixedItemHolder").html(s);
             for(var i = 0 ; i < q.length; i++){
 
-               $(".itemwrapper:eq("+i+") .id").html(q[i].itemID);
-               $(".itemwrapper:eq("+i+") .bid").attr('name', q[i].itemID);
-               $(".itemwrapper:eq("+i+") .id").html(q[i].itemID);
-               $(".itemwrapper:eq("+i+") .category").html(q[i].category);
-               $(".itemwrapper:eq("+i+")  .title").html(q[i].title);
-               $(".description:eq("+i+")").html(q[i].description);
-               $(".price:eq("+i+")").html(q[i].price+" CA$ ");
-            
+             $(".itemwrapper:eq("+i+") .id").html(q[i].itemID);
+             $(".itemwrapper:eq("+i+") .bid").attr('name', q[i].itemID);
+             $(".itemwrapper:eq("+i+") .id").html(q[i].itemID);
+             $(".itemwrapper:eq("+i+") .category").html(q[i].category);
+             $(".itemwrapper:eq("+i+")  .title").html(q[i].title);
+             $(".description:eq("+i+")").html(q[i].description);
+             $(".price:eq("+i+")").html(q[i].price+" CA$ ");
 
-               $(".itemwrapper:eq("+i+")  .date").html(getItemDateString(q[i]));
-               $(".itemwrapper:eq("+i+")  .buyer").html(q[i].buyer);
 
-               if(q[i].type =="fixed"){
+             $(".itemwrapper:eq("+i+")  .date").html(getItemDateString(q[i]));
+             $(".itemwrapper:eq("+i+")  .buyer").html(q[i].buyer);
+
+             if(q[i].type =="fixed"){
                 $(".auction:eq("+i+")").html("");
             }
         }
@@ -141,7 +194,7 @@ function loadMyItems(){
 
 function getItemDateString( item ){
     var d = item.date.split("T")[0];
-   return  d+" ("+getDaysTo(d)+" days left)";
+    return  d+" ("+getDaysTo(d)+" days left)";
 }
 
 function updateMySale(b){
@@ -151,12 +204,12 @@ function updateMySale(b){
 function removeMySale(b){
     console.log(""+$(b).attr('name'));
     var itemID = $(b).attr('name');
-     $.ajax({url: "removeItem", type: 'POST', cache: false,  data: {itemID:itemID}, success: function(result){
+    $.ajax({url: "removeItem", type: 'POST', cache: false,  data: {itemID:itemID}, success: function(result){
         if(result == "success"){
-                    loadMyItems();
-                }else{
-                    console.log("==>"+result);
-                }
+            loadMyItems();
+        }else{
+            console.log("==>"+result);
+        }
     }});
 
 }
