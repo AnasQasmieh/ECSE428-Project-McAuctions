@@ -253,11 +253,23 @@ function uploadSale(){
 
 
 function signUp(){
-    var email  =$("#newSaleForm .email").val();
+    var email  =$("#signUpForm .email").val();
     var password  = $("#signUpForm .password").val();
+    var firstName = $("#signUpForm .firstName").val();
+    var lastName = $("#signUpForm .lastName").val();
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if(!re.test(email)){
+        alert("email")
+    }
     if(password!=$("#signUpForm .confirmPassword").val()){
         console.log("password confirmation error not handled");
-    }else{
+        alert("Passwords do not match");
+    }else if(!firstName){
+        alert("Please enter your first name");
+    }else if(!lastName){
+        alert("Please enter your last name");
+    }
+    else{
         $.ajax({
             url: "signup", type: 'POST', cache: false,  data: {email:email,password:password}, success: function(result){
                 console.log(result);
