@@ -51,6 +51,7 @@ $( document ).ready(function() {
     }
 
 
+
 });
 function omniSearch(){
     document.location.hash = "#/";
@@ -241,15 +242,23 @@ function uploadSale(){
     var date = ""+$("input[name='date']").val();
     var category = ""+$("select[name='category']").find(":selected").text();
     console.log("---->"+category);
+
+    if(title.length<2 ){
+        alert("title too short")
+    }else if(price<1){
+        alert("price too low")
+    }else{
     var packet = {email:email, title:title,price:price,description:description,category:category,type:type,date:date};
     var stringPacket = JSON.stringify(packet);
     console.log("sending packet:"+ stringPacket);
-    $.ajax({url: "addItem", type: 'POST', cache: false,  data: packet, success: function(result){
+    $.ajax({url: "addItem", type: 'POST', cache: false,  data: packet, success: function (result){
         console.log(result);
+
         window.location.hash = '#My_Sales';
         loadMyItems();
 
     }});
+}
     
 }
 
@@ -307,5 +316,13 @@ function signedIn(){
 function getCookieValue(k){
     var v=document.cookie.match('(^|;) ?'+k+'=([^;]*)(;|$)');
     return v?v[2]:null;
+}
+
+function signOut(){
+    document.cookie = "";
+    $(".postLogin").fadeOut(100);
+    $(".preLogin").fadeIn(100);
+    window.location.hash = ''; //send to homepage after logout
+    window.location.reload; //reload page
 }
 
