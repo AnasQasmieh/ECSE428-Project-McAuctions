@@ -66,10 +66,10 @@ function omniSearch(){
             var keep = false;
             var i = list.pop()
             for ( var j =0; j<splitSearch.length ; j++ ){
-                if( i.title.includes(splitSearch[j])  ){
-                    displayedItems.unshift(i);
-                }else if(  i.description.includes(splitSearch[j]) ){
+                if( i.title.toLowerCase().includes(splitSearch[j].toLowerCase())  ){
                     displayedItems.push(i);
+                }else if(  i.description.toLowerCase().includes(splitSearch[j].toLowerCase()) ){
+                    displayedItems.unshift(i);
                 }
             }
          }
@@ -246,7 +246,9 @@ function uploadSale(){
     console.log("sending packet:"+ stringPacket);
     $.ajax({url: "addItem", type: 'POST', cache: false,  data: packet, success: function(result){
         console.log(result);
-        // window.location.hash = '';
+        window.location.hash = '#My_Sales';
+        loadMyItems();
+
     }});
     
 }
