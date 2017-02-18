@@ -257,16 +257,15 @@ function signUp(){
     var password  = $("#signUpForm .password").val();
     var firstName = $("#signUpForm .firstName").val();
     var lastName = $("#signUpForm .lastName").val();
-    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    if(!re.test(email)){
-        alert("email")
+    if (!(email.includes("mail.mcgill.ca")||email.includes("mcgill.ca"))) {
+        alert("Please enter your McGill email address");
     }
-    if(password!=$("#signUpForm .confirmPassword").val()){
+    else if(password!=$("#signUpForm .confirmPassword").val()){
         console.log("password confirmation error not handled");
         alert("Passwords do not match");
-    }else if(!firstName){
+    } else if(!firstName){
         alert("Please enter your first name");
-    }else if(!lastName){
+    } else if(!lastName){
         alert("Please enter your last name");
     }
     else{
