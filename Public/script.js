@@ -264,10 +264,15 @@ function uploadSale(){
 
 
 function signUp(){
+    var REGEX = /.+\..+@(mcgill\.ca)|(mail\.mcgill\.ca)/
     var email  =$("#signUpForm .email").val();
     var password  = $("#signUpForm .password").val();
-    if(password!=$("#signUpForm .confirmPassword").val()){
-        alert("passwords must match")
+    if(!email.match(REGEX)){
+        alert("This is not a valid McGill email. Please enter a valid McGill email")
+    }else if(password.length == 0 || $("#signUpForm .confirmPassword").val().length == 0){
+        alert("Enter and confirm your password")
+    }else if(password!=$("#signUpForm .confirmPassword").val()){
+        alert("Passwords must match")
     }else{
         $.ajax({
             url: "signup", type: 'POST', cache: false,  data: {email:email,password:password}, success: function(result){
@@ -277,6 +282,8 @@ function signUp(){
                     signedIn();
                     window.location.hash = '';
 
+                }else if(result == "ER_DUP_ENTRY"){
+                    alert("That email already exists!")
                 }else{
                     console.log("==>"+result);
                 }
