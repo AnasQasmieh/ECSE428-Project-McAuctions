@@ -264,10 +264,10 @@ function uploadSale(){
 
 
 function signUp(){
-    var email  =$("#newSaleForm .email").val();
+    var email  =$("#signUpForm .email").val();
     var password  = $("#signUpForm .password").val();
     if(password!=$("#signUpForm .confirmPassword").val()){
-        console.log("password confirmation error not handled");
+        alert("passwords must match")
     }else{
         $.ajax({
             url: "signup", type: 'POST', cache: false,  data: {email:email,password:password}, success: function(result){
