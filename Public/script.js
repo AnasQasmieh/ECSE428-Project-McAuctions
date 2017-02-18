@@ -272,7 +272,7 @@ function signUp(){
         $.ajax({
             url: "signup", type: 'POST', cache: false,  data: {email:email,password:password}, success: function(result){
                 console.log(result);
-                if(result == "success"){
+                if(result.includes("success")){
                     document.cookie = "email="+email+";";
                     signedIn();
                     window.location.hash = '';

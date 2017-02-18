@@ -74,7 +74,7 @@ app.post("/signup", function (req, res) {
 	var q2=req.body.password;
 	connection.query('INSERT INTO `Member`(`email`, `password`) VALUES ("'+q1+'","'+q2+'")', function (error, results, fields) {
 		if(error){res.end(error.code)}else{
-			res.end("Successfully registered: "+q1);
+			res.end("successfully registered: "+q1);
 		}
 	});
 });
