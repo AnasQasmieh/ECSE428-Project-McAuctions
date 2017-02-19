@@ -264,30 +264,33 @@ function uploadSale(){
 
 
 function signUp(){
+    var REGEX = /.+\..+@(mcgill\.ca)|(mail\.mcgill\.ca)/
     var email  =$("#signUpForm .email").val();
     var password  = $("#signUpForm .password").val();
     var firstName = $("#signUpForm .firstName").val();
     var lastName = $("#signUpForm .lastName").val();
-    if (!(email.includes("mail.mcgill.ca")||email.includes("mcgill.ca"))) {
-        alert("Please enter your McGill email address");
-    }
-    else if(password!=$("#signUpForm .confirmPassword").val()){
+    if(!email.match(REGEX)){
+        alert("This is not a valid McGill email. Please enter a valid McGill email")
+    }else if(password.length == 0 || $("#signUpForm .confirmPassword").val().length == 0){
+        alert("No password was entered")
+    }else if(password!=$("#signUpForm .confirmPassword").val()){
         console.log("password confirmation error not handled");
         alert("Passwords do not match");
-    } else if(!firstName){
+    }else if(!firstName){
         alert("Please enter your first name");
-    } else if(!lastName){
+    }else if(!lastName){
         alert("Please enter your last name");
-    }
-    else{
+    }else{
         $.ajax({
             url: "signup", type: 'POST', cache: false,  data: {email:email,password:password}, success: function(result){
                 console.log(result);
-                if(result == "success"){
+                if(result.includes("success")){
                     document.cookie = "email="+email+";";
                     signedIn();
                     window.location.hash = '';
 
+                }else if(result == "ER_DUP_ENTRY"){
+                    alert("That email already exists!")
                 }else{
                     console.log("==>"+result);
                 }
