@@ -38,6 +38,8 @@ app.post("/getItems", function (req, res) {
 });
 app.post("/addItem", function (req, res) {
 
+
+
 	var email  =""+req.body.email;
 	var title  =""+req.body.title;
 	var price  =""+req.body.price;
@@ -46,7 +48,7 @@ app.post("/addItem", function (req, res) {
 	var date =""+req.body.date;
 	var category = ""+req.body.category;
 	var img1 = ""+req.body.img1;
-
+	console.log("ADDING ITEM TO DATABASE" + JSON.stringify(req.body))
 	connection.query('INSERT INTO `Item`(`email`, `title`,`price`,`description`,`type`,`date`,`category`,`img1`) VALUES ("'+email+'","'+title+'","'+price+'","'+description+'","'+type+'","'+date+'","'+category+'","'+img1+'")', function (error, results, fields) {
 		if(error){res.end(error.code)}else{
 			res.end("Successfully registered: "+title);
@@ -116,7 +118,7 @@ app.post("/loadMyItems", function (req, res) {
 });
 
 
-+// ------------------------- FILE UPLOAD SCRIPT -------------------------//
+// ------------------------- FILE UPLOAD SCRIPT -------------------------//
 
 
 // This uploads to local directory
@@ -132,6 +134,11 @@ app.get('/', function(req, res){
 });
 
 app.post('/upload', function(req, res){
+	console.log("uploading file");
+
+
+
+
 
 	// create an incoming form object
 	var form = new formidable.IncomingForm();
@@ -140,26 +147,50 @@ app.post('/upload', function(req, res){
 	form.multiples = true;
 
 	// store all uploads in the /uploads directory
-	form.uploadDir = path.join(__dirname, '/uploads');
+	form.uploadDir = path.join(__dirname, '/Public/uploads');
+
 
 	// every time a file has been uploaded successfully,
 	// rename it to it's orignal name
 	form.on('file', function(field, file) {
-		fs.rename(file.path, path.join(form.uploadDir, file.name));
+		fs.rename(file.path, path.join(form.uploadDir, file.name),function (err){
+			if(err){
+				console.log("error: " + err);
+			}
+		});
+
 	});
+	
 
 	// log any errors that occur
 	form.on('error', function(err) {
-		console.log('An error has occured: \n' + err);
+		console.log('ERROR:   ======   An error has occured: \n' + err);
+
 	});
+
+
+
 
 	// once all the files have been uploaded, send a response to the client
 	form.on('end', function() {
-		res.end('success');
+
+	
 	});
 
 	// parse the incoming request containing the form data
-	form.parse(req);
+	form.parse(req, function(err, fields, files) {
+
+			console.log("ADDING ITEM TO DATABASE" );
+			console.log(JSON.stringify(fields));
+			connection.query('INSERT INTO `Item`(`email`, `title`,`price`,`description`,`type`,`date`,`category`,`img1`) VALUES ("'+fields.email+'","'+fields.title+'","'+fields.price+'","'+fields.description+'","'+fields.type+'","'+fields.date+'","'+fields.category+'","uploads/'+fields.img1+'")', function (error, results, fields) {
+				if(error){res.end(error.code)}else{
+					res.end("Successfully registered: ");
+				}
+		// if(error){throw error};
+	});
+
+
+		});
 
 });
 
@@ -179,14 +210,3 @@ app.listen(3000, function () {
 
 
 
-
-app.post("/test", function (req, res) {
-
-	console.log(req.body.first);
-	console.log(req.files.filename);
-
-
-	
-			res.end("succsess");
-
-});
