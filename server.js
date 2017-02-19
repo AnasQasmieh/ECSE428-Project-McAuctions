@@ -3,7 +3,8 @@ var app = express();
 var mysql = require('mysql');
 var bodyParser     =        require("body-parser");
 
-app.use(bodyParser.urlencoded({ extended: false }));
+
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static('./Public', {}));
 
@@ -127,3 +128,17 @@ app.listen(3000, function () {
 		console.log('connected to database as id ' + connection.threadId);
 	});
 })
+
+
+
+
+app.post("/test", function (req, res) {
+
+	console.log(req.body.first);
+	console.log(req.files.filename);
+
+
+	
+			res.end("succsess");
+
+});

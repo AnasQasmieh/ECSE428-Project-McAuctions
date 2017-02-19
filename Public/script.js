@@ -61,49 +61,49 @@ function omniSearch(){
     console.log(splitSearch);
     $.ajax({
         url: "getItems", type: 'POST', cache: false,  data: {category:category}, success: function(result){
-        list  = JSON.parse(result);
-        displayedItems = [];
-         while(list.length>0){
-            var keep = false;
-            var i = list.pop()
-            for ( var j =0; j<splitSearch.length ; j++ ){
-                if( i.title.toLowerCase().includes(splitSearch[j].toLowerCase())  ){
-                    displayedItems.push(i);
-                }else if(  i.description.toLowerCase().includes(splitSearch[j].toLowerCase()) ){
-                    displayedItems.unshift(i);
+            list  = JSON.parse(result);
+            displayedItems = [];
+            while(list.length>0){
+                var keep = false;
+                var i = list.pop()
+                for ( var j =0; j<splitSearch.length ; j++ ){
+                    if( i.title.toLowerCase().includes(splitSearch[j].toLowerCase())  ){
+                        displayedItems.push(i);
+                    }else if(  i.description.toLowerCase().includes(splitSearch[j].toLowerCase()) ){
+                        displayedItems.unshift(i);
+                    }
                 }
             }
-         }
-         $(".itemHolder").html("");
-         displayItems(15);
-     }
+            $(".itemHolder").html("");
+            displayItems(15);
+        }
 
-});
+    });
 }
 
 
 
 function bid(b){
- parent = b.parentNode.parentNode;
- currentPrice = $(parent).find(".price").html();
- newPrice = $(parent).find(".newPrice").val();
- minPrice = Math.ceil(currentPrice *105/100);
- itemID = $(b).attr('name');
- buyer = getCookieValue("email");
- if(minPrice > newPrice){
+   parent = b.parentNode.parentNode;
+   currentPrice = $(parent).find(".price").html();
+   newPrice = $(parent).find(".newPrice").val();
+   minPrice = Math.ceil(currentPrice *105/100);
+   itemID = $(b).attr('name');
+   buyer = getCookieValue("email");
+   if(minPrice > newPrice){
     alert("The minimum bid is: \n"+minPrice+"\nYour offer has been refused");
 }else{
-     console.log("c="+currentPrice+"--n="+newPrice+"--id="+itemID+"--buyer="+buyer);
-    $.ajax({url: "bid", type: 'POST', cache: false,  data: {itemID:itemID, price:newPrice, buyer:buyer}, success: function(result){
-       location.reload();
-    }});
+   console.log("c="+currentPrice+"--n="+newPrice+"--id="+itemID+"--buyer="+buyer);
+   $.ajax({url: "bid", type: 'POST', cache: false,  data: {itemID:itemID, price:newPrice, buyer:buyer}, success: function(result){
+     location.reload();
+ }});
 }
 
 }
 
 function displayCategory(category){
 
- getItems(category);
+   getItems(category);
 
 
 }
@@ -147,7 +147,7 @@ function  displayItems(count){
 function getItems(category){
     $.ajax({
         url: "getItems", type: 'POST', cache: false,  data: {category:category}, success: function(result){
-         console.log(result);
+         // console.log(result);
          displayedItems =JSON.parse(result);
          $(".itemHolder").html("");
          displayItems(15);
@@ -158,7 +158,7 @@ function getItems(category){
 
 
 function loadMyItems(){
-    console.log("Loading my  items");
+    // console.log("Loading my  items");
     $("#myItemHolder").html("hello") ;
 
 
@@ -173,19 +173,19 @@ function loadMyItems(){
             $("#myFixedItemHolder").html(s);
             for(var i = 0 ; i < q.length; i++){
 
-             $(".itemwrapper:eq("+i+") .id").html(q[i].itemID);
-             $(".itemwrapper:eq("+i+") .bid").attr('name', q[i].itemID);
-             $(".itemwrapper:eq("+i+") .id").html(q[i].itemID);
-             $(".itemwrapper:eq("+i+") .category").html(q[i].category);
-             $(".itemwrapper:eq("+i+")  .title").html(q[i].title);
-             $(".description:eq("+i+")").html(q[i].description);
-             $(".price:eq("+i+")").html(q[i].price+" CA$ ");
+               $(".itemwrapper:eq("+i+") .id").html(q[i].itemID);
+               $(".itemwrapper:eq("+i+") .bid").attr('name', q[i].itemID);
+               $(".itemwrapper:eq("+i+") .id").html(q[i].itemID);
+               $(".itemwrapper:eq("+i+") .category").html(q[i].category);
+               $(".itemwrapper:eq("+i+")  .title").html(q[i].title);
+               $(".description:eq("+i+")").html(q[i].description);
+               $(".price:eq("+i+")").html(q[i].price+" CA$ ");
 
 
-             $(".itemwrapper:eq("+i+")  .date").html(getItemDateString(q[i]));
-             $(".itemwrapper:eq("+i+")  .buyer").html(q[i].buyer);
+               $(".itemwrapper:eq("+i+")  .date").html(getItemDateString(q[i]));
+               $(".itemwrapper:eq("+i+")  .buyer").html(q[i].buyer);
 
-             if(q[i].type =="fixed"){
+               if(q[i].type =="fixed"){
                 $(".auction:eq("+i+")").html("");
             }
         }
@@ -241,24 +241,21 @@ function uploadSale(){
     var type  = ""+$("input[name='type']:checked").val();
     var date = ""+$("input[name='date']").val();
     var category = ""+$("select[name='category']").find(":selected").text();
-    console.log("---->"+category);
 
     if(title.length<2 ){
         alert("title too short")
     }else if(price<1){
         alert("price too low")
     }else{
-    var packet = {email:email, title:title,price:price,description:description,category:category,type:type,date:date};
-    var stringPacket = JSON.stringify(packet);
-    console.log("sending packet:"+ stringPacket);
-    $.ajax({url: "addItem", type: 'POST', cache: false,  data: packet, success: function (result){
-        console.log(result);
+        var packet = {email:email, title:title,price:price,description:description,category:category,type:type,date:date};
+        var stringPacket = JSON.stringify(packet);
+        $.ajax({url: "addItem", type: 'POST', cache: false,  data: packet, success: function (result){
 
-        window.location.hash = '#My_Sales';
-        loadMyItems();
+            window.location.hash = '#My_Sales';
+            loadMyItems();
 
-    }});
-}
+        }});
+    }
     
 }
 
@@ -326,3 +323,16 @@ function signOut(){
     window.location.reload; //reload page
 }
 
+
+function test(){
+
+    var formData = $("#myform").serialize();
+    console.log(formData);
+    $.ajax({
+        url: "test", type: 'POST', cache: false,  data:formData, success: function(result){
+            console.log(result);
+        }
+    });
+
+
+}
