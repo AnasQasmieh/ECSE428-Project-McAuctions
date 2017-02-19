@@ -266,13 +266,24 @@ function uploadSale(){
 function signUp(){
     var email  =$("#signUpForm .email").val();
     var password  = $("#signUpForm .password").val();
-    if(password!=$("#signUpForm .confirmPassword").val()){
-        alert("passwords must match")
-    }else{
+    var firstName = $("#signUpForm .firstName").val();
+    var lastName = $("#signUpForm .lastName").val();
+    if (!(email.includes("mail.mcgill.ca")||email.includes("mcgill.ca"))) {
+        alert("Please enter your McGill email address");
+    }
+    else if(password!=$("#signUpForm .confirmPassword").val()){
+        console.log("password confirmation error not handled");
+        alert("Passwords do not match");
+    } else if(!firstName){
+        alert("Please enter your first name");
+    } else if(!lastName){
+        alert("Please enter your last name");
+    }
+    else{
         $.ajax({
             url: "signup", type: 'POST', cache: false,  data: {email:email,password:password}, success: function(result){
                 console.log(result);
-                if(result.includes("success")){
+                if(result == "success"){
                     document.cookie = "email="+email+";";
                     signedIn();
                     window.location.hash = '';
