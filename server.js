@@ -97,7 +97,10 @@ app.post("/signin", function (req, res) {
 	var q2=req.body.password;
 	result  = connection.query('SELECT * FROM `Member` WHERE `email` = "'+q1+'"', function (error, results, fields) {
 		if(error){res.end(error.code)}else{
-			if(results[0].password == q2){
+			
+			if (results.length ==  0 ) {
+				res.end("failed")
+			} else if(results[0].password == q2){
 				res.end("success");
 			}else{
 				res.end("failed")
@@ -160,7 +163,7 @@ app.post('/upload', function(req, res){
 		});
 
 	});
-	
+
 
 	// log any errors that occur
 	form.on('error', function(err) {
@@ -174,7 +177,7 @@ app.post('/upload', function(req, res){
 	// once all the files have been uploaded, send a response to the client
 	form.on('end', function() {
 
-	
+
 	});
 
 	// parse the incoming request containing the form data
