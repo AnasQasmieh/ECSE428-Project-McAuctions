@@ -118,6 +118,9 @@ function  displayItems(count){
         $(".itemWrapper:last  .price").html(item.price);
         $(".itemWrapper:last  .owner").html(item.email);
         $(".itemWrapper:last  .description").html(item.description);
+		
+		$(".itemWrapper:last  .img1").attr('src',item.img1);
+		
         $(".itemWrapper:last  .date").html(getItemDateString(item));
         $(".itemWrapper:last  .bid").attr('name', item.itemID);
         if(item.type =="fixed"){
@@ -157,7 +160,7 @@ function getItems(category){
 
 
 function loadMyItems(){
-    console.log("Loading my  items");
+    console.log("Loading my items");
     $("#myItemHolder").html("hello") ;
 
 
@@ -176,10 +179,12 @@ function loadMyItems(){
              $(".itemwrapper:eq("+i+") .bid").attr('name', q[i].itemID);
              $(".itemwrapper:eq("+i+") .id").html(q[i].itemID);
              $(".itemwrapper:eq("+i+") .category").html(q[i].category);
-             $(".itemwrapper:eq("+i+")  .title").html(q[i].title);
-             $(".description:eq("+i+")").html(q[i].description);
-             $(".price:eq("+i+")").html(q[i].price+" CA$ ");
+             $(".itemwrapper:eq("+i+") .title").html(q[i].title);
+			 
+			 $(".img1:eq("+i+")").attr('src', q[i].img1);
 
+             $(".description:eq("+i+")").html(q[i].description);			 
+             $(".price:eq("+i+")").html(q[i].price+" CA$ ");
 
              $(".itemwrapper:eq("+i+")  .date").html(getItemDateString(q[i]));
              $(".itemwrapper:eq("+i+")  .buyer").html(q[i].buyer);
@@ -187,6 +192,7 @@ function loadMyItems(){
              if(q[i].type =="fixed"){
                 $(".auction:eq("+i+")").html("");
             }
+			
         }
     }
 });
@@ -241,7 +247,31 @@ function uploadSale(){
     var date = ""+$("input[name='date']").val();
     var category = ""+$("select[name='category']").find(":selected").text();
     console.log("---->"+category);
-    var packet = {email:email, title:title,price:price,description:description,category:category,type:type,date:date};
+	
+	
+	//Code to upload to a local /uploads folder. It DOES NOT upload online. Might need a different way altogether.
+	var files = $('#upload-input').get(0).files;
+	if (files.length > 0){
+    // create a FormData object which will be sent as the data payload in the AJAX request
+		var formData = new FormData();
+	}
+	
+    // loop through all the selected files and add them to the formData object
+	for (var i = 0; i < files.length; i++) {
+		var file = files[i];
+		
+		// add the files to formData object for the data payload
+		formData.append('uploads[]', file, file.name);
+	}
+
+	$.ajax({
+		url: '/upload', type: 'POST', data: formData, processData: false, contentType: false, success: function(data){
+			console.log('upload successful!\n' + data);
+	}});
+	
+	
+	//Packet to send. Attribute img1 should have a url of an image when it gets uploaded.
+    var packet = {email:email,title:title,price:price,description:description,category:category,type:type,date:date,img1:""};
     var stringPacket = JSON.stringify(packet);
     console.log("sending packet:"+ stringPacket);
     $.ajax({url: "addItem", type: 'POST', cache: false,  data: packet, success: function(result){
