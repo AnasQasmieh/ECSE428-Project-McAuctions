@@ -288,7 +288,9 @@ function uploadSale(){
         $.ajax({
             url: '/upload', type: 'POST', data: formData, processData: false, contentType: false, success: function(data){
                 console.log('upload successful!: ' + data);
+                window.location.hash = "My_Sales";
             }});
+        loadMyItems();
     }
 
     
