@@ -1,32 +1,22 @@
 <a href="#New_Sale"><button >
 	Put a new item on sale
 </button></a>
-
-
 <hr>
 <button onclick="loadMyItems()">Refresh</button>
 <hr>
 <div id="myFixedItemHolder">
-	
 </div>
-
 <div id="itemWrapperTemplate" style="display:none">
-	
-	<div class="itemWrapper">
-		<span class="title"></span> <br>
-		<img class="img1" src="" height="200" width="auto" alt="Image preview..."> <br>
-		<span class="price"></span> 
-		Category : <span class="category"></span> <br>
-		Description  <span class="description"></span> <br>
-		<span class="auction">
-		End Date : <span class="date"></span> <br>
-		Buyer : <span class="buyer">none</span> 
-		</span>
-		<br>
-		<!-- <input type="button" value="Update Sale" name="someID"  class="bid" onclick="updateMySale(this)"> -->
-		<input type="button" value="Remove Sale" name="someID"  class="bid" onclick="removeMySale(this)"> 
-		
-		<hr>
-	</div>
-
+    <div class="itemWrapper">
+        <span class="title"></span> <br>
+        <img class="img1" src="" height="200" width="auto" alt="Image preview..."> <br>
+        <span class="price"></span> Category : <span class="category"></span> <br> Description <span class="description"></span> <br>
+        <span class="auction">
+		End Date : <span class="date"></span> <br> Buyer : <span class="buyer">none</span>
+        </span>
+        <br>
+        <!-- <input type="button" value="Update Sale" name="someID"  class="bid" onclick="updateMySale(this)"> -->
+        <input type="button" value="Remove Sale" name="someID" class="bid" onclick="removeMySale(this)">
+        <hr>
+    </div>
 </div>
