@@ -79,7 +79,9 @@ app.post("/bid", function(req, res) {
 app.post("/signup", function(req, res) {
     var q1 = req.body.email;
     var q2 = req.body.password;
-    connection.query('INSERT INTO `Member`(`email`, `password`) VALUES ("' + q1 + '","' + q2 + '")', function(error, results, fields) {
+    var q3 = req.body.firstName;
+    var q4 = req.body.lastName;
+    connection.query('INSERT INTO `Member`(`email`, `password`, `firstName`, `lastName`) VALUES ("' + q1 + '","' + q2 + '","' + q3 + '","' + q4 + '")', function(error, results, fields) {
         if (error) {
             res.end(error.code)
         } else {
@@ -127,6 +129,18 @@ app.post("/loadMyItems", function(req, res) {
         } else {
             res.end(JSON.stringify(results));
 
+        }
+    });
+});
+
+app.post("/getProfile", function(req,res) {
+    var q1 = req.body.email;
+
+    result = connection.query('SELECT * FROM `Member` WHERE `email` = "' + q1 + '"', function(error, results, fields) {
+        if (error) {
+            res.end(error.code)
+        } else {
+            res.end(JSON.stringify(results));
         }
     });
 });

@@ -34,6 +34,10 @@ app.config(function($routeProvider) {
             templateUrl: "Page/New_Sale.html"
         })
 
+        .when("/My_Profile", {
+            templateUrl: "Page/My_Profile.html"
+        })
+
 });
 
 $(document).ready(function() {
@@ -314,7 +318,9 @@ function signUp() {
             cache: false,
             data: {
                 email: email,
-                password: password
+                password: password,
+                firstName: firstName,
+                lastName: lastName
             },
             success: function(result) {
                 console.log(result);
@@ -370,6 +376,24 @@ function signedIn() {
 function getCookieValue(k) {
     var v = document.cookie.match('(^|;) ?' + k + '=([^;]*)(;|$)');
     return v ? v[2] : null;
+}
+
+function getProfile() {
+    var email = getCookieValue("email");
+    $.ajax({
+        url:"getProfile",
+        type: 'POST',
+        cache: false,
+        data: {
+            email: email,
+        },
+        success: function(result) {
+            var q = JSON.parse(result);
+            document.getElementById("firstName").innerHTML = q[0].firstName;
+            document.getElementById("lastName").innerHTML = q[0].lastName;
+            document.getElementById("email").innerHTML = q[0].email;
+        }
+    })
 }
 
 function signOut() {
