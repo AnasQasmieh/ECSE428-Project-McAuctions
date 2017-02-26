@@ -408,13 +408,13 @@ function signOut() {
 
 // Edit profile functions
 function changeFirstName() {
-    var lName = prompt("Enter your first name");
+    var fName = prompt("Enter your first name:", document.getElementById("firstName").innerHTML);
 }
 
 function changeLastName() {
-    alert("last name");
+    var lName = prompt("Enter your last name:", document.getElementById("lastName").innerHTML);
 }
 
 function changeEmail(){
-    alert("email");
+    var email = prompt("Enter a new email:", document.getElementById("email").innerHTML);
 }
