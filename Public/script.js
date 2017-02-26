@@ -396,10 +396,25 @@ function getProfile() {
     })
 }
 
+
 function signOut() {
     document.cookie = "";
     $(".postLogin").fadeOut(100);
     $(".preLogin").fadeIn(100);
     window.location.hash = ''; //send to homepage after logout
     window.location.reload; //reload page
+}
+
+
+// Edit profile functions
+function changeFirstName() {
+    var lName = prompt("Enter your first name");
+}
+
+function changeLastName() {
+    alert("last name");
+}
+
+function changeEmail(){
+    alert("email");
 }
