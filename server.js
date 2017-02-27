@@ -125,7 +125,7 @@ app.post("/loadMyItems", function(req, res) {
 
     result = connection.query('SELECT * FROM `Item` WHERE `email` = "' + q1 + '"', function(error, results, fields) {
         if (error) {
-            res.end(error.code)
+            res.end(error.code);
         } else {
             res.end(JSON.stringify(results));
 
@@ -144,6 +144,65 @@ app.post("/getProfile", function(req,res) {
         }
     });
 });
+
+
+
+
+// -------------------- CHANGE USER DETAILS SCRIPT ----------------------//
+
+
+app.post("/changeFirstName", function(req, res){
+    var q1 = req.body.email;
+
+    connection.query('UPDATE `Member` SET `firstName` = ? WHERE `email` = ?', [req.body.fName, q1], function(error, results, fields) {
+        if (error) {
+            res.end(error.code)
+        } else {
+            res.end(JSON.stringify(results));
+        }
+    });
+});
+
+app.post("/changeLastName", function(req, res){
+    var q1 = req.body.email;
+    
+
+    connection.query('UPDATE `Member` SET `lastName` = ? WHERE `email` = ?', [req.body.lName, q1], function(error, results, fields) {
+        if (error) {
+            res.end(error.code)
+        } else {
+            res.end(JSON.stringify(results));
+        }
+    });
+});
+
+app.post("/changeEmail", function(req, res){
+    var q1 = req.body.email;
+    
+    /*
+    result = connection.query('SELECT * FROM `Member` WHERE `email` = "' + q1 + '"', function(error, results, fields) {
+        if (error) {
+            console.log("DUP ENTRY");
+            res.end(error.code);
+        } else {
+            connection.query('UPDATE `Member` SET `email` = ? WHERE `email` = ?', [req.body.newEmail, q1]);
+            res.end(JSON.stringify(results));
+        }
+    }); */
+
+    connection.query('UPDATE `Member` SET `email` = ? WHERE `email` = ?', [req.body.newEmail, q1], function(error, results, fields) {
+        if (error) {
+            res.end(error.code)
+        } else {
+            res.end(JSON.stringify(results));
+        }
+    });
+
+});
+
+
+
+
 
 // ------------------------- FILE UPLOAD SCRIPT -------------------------//
 

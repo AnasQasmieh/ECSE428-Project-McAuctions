@@ -294,13 +294,20 @@ function uploadSale() {
     }
 }
 
+function validateEmail(newEm){
+    var REGEX = /.+\..+@(mcgill\.ca)|(mail\.mcgill\.ca)/;
+    if(newEm.match(REGEX))
+        return true;
+    else
+        return false;
+}
+
 function signUp() {
-    var REGEX = /.+\..+@(mcgill\.ca)|(mail\.mcgill\.ca)/
     var email = $("#signUpForm .email").val();
     var password = $("#signUpForm .password").val();
     var firstName = $("#signUpForm .firstName").val();
     var lastName = $("#signUpForm .lastName").val();
-    if (!email.match(REGEX)) {
+    if (!validateEmail(email)) {
         alert("This is not a valid McGill email. Please enter a valid McGill email")
     } else if (password.length == 0 || $("#signUpForm .confirmPassword").val().length == 0) {
         alert("No password was entered")
@@ -330,7 +337,7 @@ function signUp() {
                     window.location.hash = '';
 
                 } else if (result == "ER_DUP_ENTRY") {
-                    alert("That email already exists!")
+                    alert("That email already exists!");
                 } else {
                     console.log("==>" + result);
                 }
@@ -408,13 +415,72 @@ function signOut() {
 
 // Edit profile functions
 function changeFirstName() {
+    var email = getCookieValue("email");
     var fName = prompt("Enter your first name:", document.getElementById("firstName").innerHTML);
+    if(fName.length > 0){
+        $.ajax({
+            url:"changeFirstName",
+            type: 'POST',
+            cache: false,
+            data: {
+                email: email,
+                fName: fName,
+            },
+            success: function(result) {
+                console.log(result);
+                window.location.hash = "My_Profile";
+            }
+        })
+    }else{
+        alert("Enter a valid first name");
+    }
 }
 
 function changeLastName() {
+    var email = getCookieValue("email");
     var lName = prompt("Enter your last name:", document.getElementById("lastName").innerHTML);
+    if(lName.length > 0){
+        $.ajax({
+            url:"changeLastName",
+            type: 'POST',
+            cache: false,
+            data: {
+                email: email,
+                lName: lName,
+            },
+            success: function(result) {
+                console.log(result);
+                window.location.hash = "My_Profile";
+            }
+        })
+    }else{
+        alert("Enter a valid last name");
+    }
 }
 
 function changeEmail(){
-    var email = prompt("Enter a new email:", document.getElementById("email").innerHTML);
+    var email = getCookieValue("email");
+    var newEmail = prompt("Enter a new email:", document.getElementById("email").innerHTML);
+    if(!validateEmail(newEmail)){
+        alert("Enter a valid McGill Email");
+    }else{
+        $.ajax({
+            url:"changeEmail",
+            type: 'POST',
+            cache: false,
+            data: {
+                email: email,
+                newEmail: newEmail,
+            },
+            success: function(result) {
+                console.log(result);
+                if (result == "ER_DUP_ENTRY") {
+                    alert("That email already exists!");
+                } else {
+                    document.cookie = "email=" + newEmail + ";"; // reset cookie to new email address
+                    window.location.hash = "My_Profile";
+                }
+            }
+        })
+    }
 }
