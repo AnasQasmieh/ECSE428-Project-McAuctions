@@ -37,7 +37,6 @@ app.config(function($routeProvider) {
         .when("/My_Profile", {
             templateUrl: "Page/My_Profile.html"
         })
-
 });
 
 $(document).ready(function() {
@@ -178,7 +177,8 @@ function loadMyItems() {
 
                 $(".itemwrapper:eq(" + i + ") .id").html(q[i].itemID);
                 $(".itemwrapper:eq(" + i + ") .bid").attr('name', q[i].itemID);
-                $(".itemwrapper:eq(" + i + ") .id").html(q[i].itemID);
+				//$(".itemwrapper:eq(" + i + ") .theid").html(q[i].itemID); //Added
+                //$(".itemwrapper:eq(" + i + ") .id").html(q[i].itemID);
                 $(".itemwrapper:eq(" + i + ") .category").html(q[i].category);
                 $(".itemwrapper:eq(" + i + ")  .title").html(q[i].title);
                 $(".img1:eq(" + i + ")").attr('src', q[i].img1);
@@ -200,10 +200,77 @@ function getItemDateString(item) {
     return d + " (" + getDaysTo(d) + " days left)";
 }
 
-function updateMySale(b) {
-    console.log("" + $(b).attr('name'));
 
+function updateMySale(b) {
+	console.log("" + $(b).attr('name'));
+    var itemID = $(b).attr('name');
+	
+    var email = "" + getCookieValue("email");
+	
+    var title = "" + $("#updateSaleForm .title").val();
+    var price = "" + $("#updateSaleForm .price").val();
+    var description = "" + $("#updateSaleForm .description").val();
+    var type = "" + $("input[name='type']:checked").val();
+    var date = "" + $("input[name='date']").val();
+    var category = "" + $("select[name='category']").find(":selected").text();
+    var formData = new FormData();
+	formData.append("itemID", itemID);
+    formData.append("email", email);
+    formData.append("title", title);
+    formData.append("price", price);
+    formData.append("description", description);
+    formData.append("type", type);
+    formData.append("date", date);
+    formData.append("category", category);
+	
+    // code to upload to a local /uploads folder
+    var files = $('#upload-input').get(0).files;
+
+    // loop through all the selected files and add them to the formData object
+    for (var i = 0; i < files.length; i++) {
+        var file = files[i];
+
+        // add the files to formData object for the data payload
+        formData.append("img" + (i + 1), file.name);
+        formData.append('uploads[]', file, file.name);
+    }
+
+    for (var i = files.length + 1; i < 6; i++) {
+        formData.append("img" + i, "");
+    }
+
+    if (title.length < 2) {
+        alert("title too short")
+    } else if (price < 1) {
+        alert("price too low")
+    } else {
+        $.ajax({
+            url: '/updateSale',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(data) {
+                console.log('upload successful!: ' + data);
+                window.location.hash = "My_Sales";
+            }
+        });
+		document.getElementById("updateSaleForm").style.display = "none";
+		document.getElementById("myFixedItemHolder").style.display = "block";
+		loadMyItems();
+    }
 }
+
+function beginEditingSale(b) {
+	console.log("" + $(b).attr('name'));
+	var itemID = $(b).attr('name');
+	$("#confirmEdit").attr('name', itemID);
+	
+	document.getElementById("updateSaleForm").style.display = "block";
+	document.getElementById("myFixedItemHolder").style.display = "none";
+}
+
+
 
 function removeMySale(b) {
     console.log("" + $(b).attr('name'));
@@ -229,8 +296,10 @@ function removeMySale(b) {
 function checkType() {
     if ($("#auctionRadio").is(':checked')) {
         $("#newSaleForm .date").fadeIn();
+		$("#updateSaleForm .date").fadeIn();
     } else {
         $("#newSaleForm .date").fadeOut();
+		$("#updateSaleForm .date").fadeOut();
     }
 }
 
