@@ -9,13 +9,16 @@
 </div>
 <div id="itemWrapperTemplate" style="display:none">
     <div class="itemWrapper">
-        <span class="title"></span> <br>
+        <span id="title-id" class="title"></span>
+		<input type="button" value="Edit Title" name="someID" class="bid" onclick="editTitle(this)"> <br>
         <img class="img1" src="" height="200" width="auto" alt="Image preview..."> <br>
-        <span class="price"></span> Category : <span class="category"></span> <br> Description <span class="description"></span> <br>
+        <span id="price-id" class="price"></span> Category : <span class="category"></span> <br> Description <span id="description-id" class="description"></span> <br>
         <span class="auction">
 		End Date : <span class="date"></span> <br> Buyer : <span class="buyer">none</span>
         </span>
         <br>
+		<input type="button" value="Edit Price" name="someID" class="bid" onclick="editPrice(this)">
+		<input type="button" value="Edit Description" name="someID" class="bid" onclick="editDescription(this)"> <br>
         <input type="button" value="Edit Sale" name="someID" class="bid" onclick="beginEditingSale(this)">
         <br>
         <input type="button" value="Remove Sale" name="someID" class="bid" onclick="removeMySale(this)">
