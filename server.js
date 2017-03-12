@@ -65,7 +65,15 @@ app.post("/bid", function(req, res) {
     var itemID = "" + req.body.itemID;
     var price = "" + req.body.price;
     var buyer = "" + req.body.buyer
+    connection.query(
+            'INSERT INTO `Bid` (`itemID`,`email`,`price`) VALUES ("'+itemID+'","'+buyer+'","'+price+'")',
+            function(error,results,fields){
+                  if (error) {
+            res.end(error.code)
+        } 
 
+            }
+        );
     connection.query('UPDATE `Item` Set `price`="' + price + '",`buyer`="' + buyer + '" WHERE `itemID`="' + itemID + '"', function(error, results, fields) {
         if (error) {
             res.end(error.code)
@@ -132,11 +140,51 @@ app.post("/loadMyItems", function(req, res) {
         }
     });
 });
+app.post("/moneyEarned", function(req, res) {
+    var email = req.body.email;
+
+    result = connection.query('SELECT * FROM `Item` WHERE `email` = "' + email + '" AND `sold`="1"', function(error, results, fields) {
+        if (error) {
+            res.end(error.code);
+        } else {
+            var r = 0;
+            for (var i = 0 ; i < results.length; i++){
+                r+= results[i].price;
+            }
+
+            res.end(JSON.stringify(r));
+
+        }
+    });
+});
 
 app.post("/getProfile", function(req, res) {
     var q1 = req.body.email;
 
     result = connection.query('SELECT * FROM `Member` WHERE `email` = "' + q1 + '"', function(error, results, fields) {
+        if (error) {
+            res.end(error.code)
+        } else {
+            res.end(JSON.stringify(results));
+        }
+    });
+});
+app.post("/getBuyers", function(req, res) {
+    var id = req.body.itemID;
+
+    connection.query('SELECT * FROM `Bid` WHERE `itemID` = "' + id + '"', function(error, results, fields) {
+        if (error) {
+            res.end(error.code)
+        } else {
+            res.end(JSON.stringify(results));
+        }
+    });
+});
+
+app.post("/markSold", function(req, res) {
+    var id = req.body.itemID;
+
+    connection.query('UPDATE `Item` SET `sold`= true where `itemID`="'+id+'"', function(error, results, fields) {
         if (error) {
             res.end(error.code)
         } else {

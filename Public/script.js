@@ -113,6 +113,24 @@ function bid(b) {
     }
 }
 
+function moneyEarned(){
+$.ajax({
+        url: "moneyEarned",
+        type: 'POST',
+        cache: false,
+        data:{
+            email: getCookieValue("email")
+        },
+       
+        success: function(result) {
+           
+           alert("you have earned:"+result+"$ using McAuction");
+       }
+           
+
+    });
+}
+
 function displayCategory(category) {
     getItems(category);
 }
@@ -186,7 +204,10 @@ function loadMyItems() {
                 $(".price:eq(" + i + ")").html(q[i].price + " CA$ ");
                 $(".itemwrapper:eq(" + i + ")  .date").html(getItemDateString(q[i]));
                 $(".itemwrapper:eq(" + i + ")  .buyer").html(q[i].buyer);
-
+               if(q[i].sold){
+               $(".itemwrapper:eq(" + i + ")  .msg").html("<h4>sold</h4>")
+                $(".itemwrapper:eq(" + i + ")  .soldButton").hide();
+               }
                 if (q[i].type == "fixed") {
                     $(".auction:eq(" + i + ")").html("");
                 }
@@ -293,6 +314,59 @@ function removeMySale(b) {
 
 }
 
+function markSold(b){
+
+    console.log("" + $(b).attr('name'));
+    var itemID = $(b).attr('name');
+    $.ajax({
+        url: "markSold",
+        type: 'POST',
+        cache: false,
+        data: {
+            itemID: itemID
+        },
+        success: function(result) {
+            if (result == "success") {
+              
+            } else {
+                console.log("==>" + result);
+            }
+        }
+    });
+}
+
+
+
+
+function viewBuyers(b){
+ console.log("" + $(b).attr('name'));
+    var itemID = $(b).attr('name');
+    $.ajax({
+        url: "getBuyers",
+        type: 'POST',
+        cache: false,
+        data: {
+            itemID: itemID
+        },
+        success: function(result) {
+            if (result == "success") {
+              
+            } else {
+               var r = JSON.parse(result);
+               console.log(r);
+
+               var s = "Buyers:\n"
+               for(var i = 0 ; i < r.length; i ++){
+                s= s+ r[i].email + " : " + r[i].price + " $ \n";
+               }
+               alert(s);
+            }
+        }
+    });
+
+
+}
+
 function checkType() {
     if ($("#auctionRadio").is(':checked')) {
         $("#newSaleForm .date").fadeIn();
@@ -329,6 +403,7 @@ function uploadSale() {
     formData.append("category", category);
     //Code to upload to a local /uploads folder. It DOES NOT upload online. Might need a different way altogether.
     var files = $('#upload-input').get(0).files;
+
 
     // loop through all the selected files and add them to the formData object
     for (var i = 0; i < files.length; i++) {
