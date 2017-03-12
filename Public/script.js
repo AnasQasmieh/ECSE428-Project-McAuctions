@@ -261,6 +261,77 @@ function updateMySale(b) {
     }
 }
 
+function editTitle(b) {
+	console.log("" + $(b).attr('name'));
+    var itemID = $(b).attr('name');
+    var newTitle = prompt("Enter your new title:", document.getElementById("title-id").innerHTML);
+    if(newTitle.length > 0){
+        $.ajax({
+            url:"editTitle",
+            type: 'POST',
+            cache: false,
+            data: {
+                itemID: itemID,
+                newTitle: newTitle,
+            },
+            success: function(result) {
+                console.log(result);
+                window.location.hash = "My_Sales";
+            }
+        })
+    }else{
+        alert("You did not enter a new title");
+    }
+}
+
+function editPrice(b) {
+	console.log("" + $(b).attr('name'));
+    var itemID = $(b).attr('name');
+    var newPrice = prompt("Enter your new price:", document.getElementById("price-id").innerHTML);
+    if(newPrice.length > 0){
+        $.ajax({
+            url:"editPrice",
+            type: 'POST',
+            cache: false,
+            data: {
+                itemID: itemID,
+                newPrice: newPrice,
+            },
+            success: function(result) {
+                console.log(result);
+                window.location.hash = "My_Sales";
+            }
+        })
+    }else{
+        alert("You did not enter a new price");
+    }
+}
+
+function editDescription(b) {
+	console.log("" + $(b).attr('name'));
+    var itemID = $(b).attr('name');
+    var newDescription = prompt("Enter your new description:", document.getElementById("description-id").innerHTML);
+    if(newDescription.length > 0){
+        $.ajax({
+            url:"editDescription",
+            type: 'POST',
+            cache: false,
+            data: {
+                itemID: itemID,
+                newDescription: newDescription,
+            },
+            success: function(result) {
+                console.log(result);
+                window.location.hash = "My_Sales";
+            }
+        })
+    }else{
+        alert("You did not enter a new description");
+    }
+}
+
+
+
 function beginEditingSale(b) {
 	console.log("" + $(b).attr('name'));
 	var itemID = $(b).attr('name');

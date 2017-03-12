@@ -315,6 +315,36 @@ app.post('/updateSale', function(req, res) {
     });
 });
 
+app.post("/editTitle", function(req, res){
+    connection.query('UPDATE `Item` SET `title`= "' + req.body.newTitle + '" WHERE `itemID`= "' + req.body.itemID + '"', function(error, results, fields) {
+        if (error) {
+            res.end(error.code)
+        } else {
+            res.end(JSON.stringify(results));
+        }
+    });
+});
+
+app.post("/editPrice", function(req, res){
+    connection.query('UPDATE `Item` SET `price`= "' + req.body.newPrice + '" WHERE `itemID`= "' + req.body.itemID + '"', function(error, results, fields) {
+        if (error) {
+            res.end(error.code)
+        } else {
+            res.end(JSON.stringify(results));
+        }
+    });
+});
+
+app.post("/editDescription", function(req, res){
+    connection.query('UPDATE `Item` SET `description`= "' + req.body.newDescription + '" WHERE `itemID`= "' + req.body.itemID + '"', function(error, results, fields) {
+        if (error) {
+            res.end(error.code)
+        } else {
+            res.end(JSON.stringify(results));
+        }
+    });
+});
+
 
 app.listen(3000, function() {
 
