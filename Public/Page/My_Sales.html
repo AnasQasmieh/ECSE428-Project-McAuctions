@@ -16,16 +16,14 @@
         </span>
         <br>
         <input type="button" value="Edit Sale" name="someID" class="bid" onclick="beginEditingSale(this)">
-		<br>
+        <br>
         <input type="button" value="Remove Sale" name="someID" class="bid" onclick="removeMySale(this)">
         <hr>
     </div>
 </div>
-
 <form id="updateSaleForm" style="display:none" name="someID">
-	<input id="itemTitle" type="text" name="title" placeholder="Item Title" class="title" value=""><br>
-	PRICE: <input id="itemPrice" type="number" name="price" min="0" class="price" value=""> CA$<br>
-    <textarea id="itemDescription"rows="4" cols="50" placeholder="Item Description" class="description"></textarea><br>
+    <input id="itemTitle" type="text" name="title" placeholder="Item Title" class="title" value=""><br> PRICE: <input id="itemPrice" type="number" name="price" min="0" class="price" value=""> CA$<br>
+    <textarea id="itemDescription" rows="4" cols="50" placeholder="Item Description" class="description"></textarea><br>
     <input id="upload-input" type="file" accept=".jpg,.jpeg,.png" placeholder="Item Image" name="uploads[]"><br>
     <select name="category">
 		<option value="miscellaneous">miscellaneous</option>
@@ -44,5 +42,5 @@
     <div class="date" style="display:none">Enter the date at will the auction will end and the item will be sold</div>
     <input type="date" name="date" class="date" style="display:none"> <br>
     <hr>
-	<input id="confirmEdit" type="button" value="Update Sale" name="someID" class="bid" onclick="updateMySale(this)"> <br>
+    <input id="confirmEdit" type="button" value="Update Sale" name="someID" class="bid" onclick="updateMySale(this)"> <br>
 </form>

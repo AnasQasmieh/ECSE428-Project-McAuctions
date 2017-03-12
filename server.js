@@ -133,7 +133,7 @@ app.post("/loadMyItems", function(req, res) {
     });
 });
 
-app.post("/getProfile", function(req,res) {
+app.post("/getProfile", function(req, res) {
     var q1 = req.body.email;
 
     result = connection.query('SELECT * FROM `Member` WHERE `email` = "' + q1 + '"', function(error, results, fields) {
@@ -151,7 +151,7 @@ app.post("/getProfile", function(req,res) {
 // -------------------- CHANGE USER DETAILS SCRIPT ----------------------//
 
 
-app.post("/changeFirstName", function(req, res){
+app.post("/changeFirstName", function(req, res) {
     var q1 = req.body.email;
 
     connection.query('UPDATE `Member` SET `firstName` = ? WHERE `email` = ?', [req.body.fName, q1], function(error, results, fields) {
@@ -163,9 +163,9 @@ app.post("/changeFirstName", function(req, res){
     });
 });
 
-app.post("/changeLastName", function(req, res){
+app.post("/changeLastName", function(req, res) {
     var q1 = req.body.email;
-    
+
 
     connection.query('UPDATE `Member` SET `lastName` = ? WHERE `email` = ?', [req.body.lName, q1], function(error, results, fields) {
         if (error) {
@@ -176,9 +176,9 @@ app.post("/changeLastName", function(req, res){
     });
 });
 
-app.post("/changeEmail", function(req, res){
+app.post("/changeEmail", function(req, res) {
     var q1 = req.body.email;
-    
+
     /*
     result = connection.query('SELECT * FROM `Member` WHERE `email` = "' + q1 + '"', function(error, results, fields) {
         if (error) {
@@ -258,7 +258,7 @@ app.post('/upload', function(req, res) {
         console.log("ADDING ITEM TO DATABASE");
         console.log(JSON.stringify(fields));
         connection.query('INSERT INTO `Item`(`email`, `title`,`price`,`description`,`type`,`date`,`category`,`img1`) VALUES ("' + fields.email + '","' + fields.title + '","' + fields.price + '","' + fields.description + '","' + fields.type + '","' + fields.date + '","' + fields.category + '","uploads/' + fields.img1 + '")', function(error, results, fields) {
-			if (error) {
+            if (error) {
                 res.end(error.code)
             } else {
                 res.end("Successfully registered: ");
@@ -278,7 +278,7 @@ app.post('/updateSale', function(req, res) {
     var form = new formidable.IncomingForm();
     form.multiples = true;
     form.uploadDir = path.join(__dirname, '/Public/uploads');
-	
+
     form.on('file', function(field, file) {
         fs.rename(file.path, path.join(form.uploadDir, file.name), function(err) {
             if (err) {
@@ -291,27 +291,27 @@ app.post('/updateSale', function(req, res) {
         console.log('ERROR:   ======   An error has occured: \n' + err);
     });
 
-    form.on('end', function() {
-    });
+    form.on('end', function() {});
 
     form.parse(req, function(err, fields, files) {
-		
+
         console.log("MODIFYING ITEM IN DATABASE");
         console.log(JSON.stringify(fields));
-		connection.query('UPDATE `Item` SET `title`= "' + fields.title + 
-						'", `price`= "' + fields.price + 
-						'", `description`= "' + fields.description + 
-						'", `type`= "' + fields.type + 
-						'", `date`= "' + fields.date + 
-						'", `category`= "' + fields.category + 
-						'", `img1`= "uploads/' + fields.img1 + 
-						'" WHERE `itemID`= "' + fields.itemID + '"', function(error, results, fields) {
-			if (error) {
-                res.end(error.code)
-            } else {
-                res.end("Successfully registered: ");
-            }
-        });
+        connection.query('UPDATE `Item` SET `title`= "' + fields.title +
+            '", `price`= "' + fields.price +
+            '", `description`= "' + fields.description +
+            '", `type`= "' + fields.type +
+            '", `date`= "' + fields.date +
+            '", `category`= "' + fields.category +
+            '", `img1`= "uploads/' + fields.img1 +
+            '" WHERE `itemID`= "' + fields.itemID + '"',
+            function(error, results, fields) {
+                if (error) {
+                    res.end(error.code)
+                } else {
+                    res.end("Successfully registered: ");
+                }
+            });
     });
 });
 

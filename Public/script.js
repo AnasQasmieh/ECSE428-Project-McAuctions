@@ -177,7 +177,7 @@ function loadMyItems() {
 
                 $(".itemwrapper:eq(" + i + ") .id").html(q[i].itemID);
                 $(".itemwrapper:eq(" + i + ") .bid").attr('name', q[i].itemID);
-				//$(".itemwrapper:eq(" + i + ") .theid").html(q[i].itemID); //Added
+                //$(".itemwrapper:eq(" + i + ") .theid").html(q[i].itemID); //Added
                 //$(".itemwrapper:eq(" + i + ") .id").html(q[i].itemID);
                 $(".itemwrapper:eq(" + i + ") .category").html(q[i].category);
                 $(".itemwrapper:eq(" + i + ")  .title").html(q[i].title);
@@ -202,11 +202,11 @@ function getItemDateString(item) {
 
 
 function updateMySale(b) {
-	console.log("" + $(b).attr('name'));
+    console.log("" + $(b).attr('name'));
     var itemID = $(b).attr('name');
-	
+
     var email = "" + getCookieValue("email");
-	
+
     var title = "" + $("#updateSaleForm .title").val();
     var price = "" + $("#updateSaleForm .price").val();
     var description = "" + $("#updateSaleForm .description").val();
@@ -214,7 +214,7 @@ function updateMySale(b) {
     var date = "" + $("input[name='date']").val();
     var category = "" + $("select[name='category']").find(":selected").text();
     var formData = new FormData();
-	formData.append("itemID", itemID);
+    formData.append("itemID", itemID);
     formData.append("email", email);
     formData.append("title", title);
     formData.append("price", price);
@@ -222,7 +222,7 @@ function updateMySale(b) {
     formData.append("type", type);
     formData.append("date", date);
     formData.append("category", category);
-	
+
     // code to upload to a local /uploads folder
     var files = $('#upload-input').get(0).files;
 
@@ -255,19 +255,19 @@ function updateMySale(b) {
                 window.location.hash = "My_Sales";
             }
         });
-		document.getElementById("updateSaleForm").style.display = "none";
-		document.getElementById("myFixedItemHolder").style.display = "block";
-		loadMyItems();
+        document.getElementById("updateSaleForm").style.display = "none";
+        document.getElementById("myFixedItemHolder").style.display = "block";
+        loadMyItems();
     }
 }
 
 function beginEditingSale(b) {
-	console.log("" + $(b).attr('name'));
-	var itemID = $(b).attr('name');
-	$("#confirmEdit").attr('name', itemID);
-	
-	document.getElementById("updateSaleForm").style.display = "block";
-	document.getElementById("myFixedItemHolder").style.display = "none";
+    console.log("" + $(b).attr('name'));
+    var itemID = $(b).attr('name');
+    $("#confirmEdit").attr('name', itemID);
+
+    document.getElementById("updateSaleForm").style.display = "block";
+    document.getElementById("myFixedItemHolder").style.display = "none";
 }
 
 
@@ -296,10 +296,10 @@ function removeMySale(b) {
 function checkType() {
     if ($("#auctionRadio").is(':checked')) {
         $("#newSaleForm .date").fadeIn();
-		$("#updateSaleForm .date").fadeIn();
+        $("#updateSaleForm .date").fadeIn();
     } else {
         $("#newSaleForm .date").fadeOut();
-		$("#updateSaleForm .date").fadeOut();
+        $("#updateSaleForm .date").fadeOut();
     }
 }
 
@@ -363,9 +363,9 @@ function uploadSale() {
     }
 }
 
-function validateEmail(newEm){
+function validateEmail(newEm) {
     var REGEX = /.+\..+@(mcgill\.ca)|(mail\.mcgill\.ca)/;
-    if(newEm.match(REGEX))
+    if (newEm.match(REGEX))
         return true;
     else
         return false;
@@ -457,7 +457,7 @@ function getCookieValue(k) {
 function getProfile() {
     var email = getCookieValue("email");
     $.ajax({
-        url:"getProfile",
+        url: "getProfile",
         type: 'POST',
         cache: false,
         data: {
@@ -486,9 +486,9 @@ function signOut() {
 function changeFirstName() {
     var email = getCookieValue("email");
     var fName = prompt("Enter your first name:", document.getElementById("firstName").innerHTML);
-    if(fName.length > 0){
+    if (fName.length > 0) {
         $.ajax({
-            url:"changeFirstName",
+            url: "changeFirstName",
             type: 'POST',
             cache: false,
             data: {
@@ -500,7 +500,7 @@ function changeFirstName() {
                 window.location.hash = "My_Profile";
             }
         })
-    }else{
+    } else {
         alert("Enter a valid first name");
     }
 }
@@ -508,9 +508,9 @@ function changeFirstName() {
 function changeLastName() {
     var email = getCookieValue("email");
     var lName = prompt("Enter your last name:", document.getElementById("lastName").innerHTML);
-    if(lName.length > 0){
+    if (lName.length > 0) {
         $.ajax({
-            url:"changeLastName",
+            url: "changeLastName",
             type: 'POST',
             cache: false,
             data: {
@@ -522,19 +522,19 @@ function changeLastName() {
                 window.location.hash = "My_Profile";
             }
         })
-    }else{
+    } else {
         alert("Enter a valid last name");
     }
 }
 
-function changeEmail(){
+function changeEmail() {
     var email = getCookieValue("email");
     var newEmail = prompt("Enter a new email:", document.getElementById("email").innerHTML);
-    if(!validateEmail(newEmail)){
+    if (!validateEmail(newEmail)) {
         alert("Enter a valid McGill Email");
-    }else{
+    } else {
         $.ajax({
-            url:"changeEmail",
+            url: "changeEmail",
             type: 'POST',
             cache: false,
             data: {
