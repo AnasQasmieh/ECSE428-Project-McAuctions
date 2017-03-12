@@ -197,7 +197,18 @@ app.post("/markSold", function(req, res) {
 
 
 // -------------------- CHANGE USER DETAILS SCRIPT ----------------------//
+app.post("/updatePassword", function(req, res){
+    var q1 = req.body.email;
 
+    connection.query('UPDATE `Member` SET `password` = ? WHERE `email` = ?', [req.body.newPass, q1], function(error, results, fields) {
+        if (error) {
+            res.end(error.code)
+        } else {
+            res.end(JSON.stringify(results));
+        }
+    });
+
+});
 
 app.post("/changeFirstName", function(req, res) {
     var q1 = req.body.email;
@@ -227,16 +238,6 @@ app.post("/changeLastName", function(req, res) {
 app.post("/changeEmail", function(req, res) {
     var q1 = req.body.email;
 
-    /*
-    result = connection.query('SELECT * FROM `Member` WHERE `email` = "' + q1 + '"', function(error, results, fields) {
-        if (error) {
-            console.log("DUP ENTRY");
-            res.end(error.code);
-        } else {
-            connection.query('UPDATE `Member` SET `email` = ? WHERE `email` = ?', [req.body.newEmail, q1]);
-            res.end(JSON.stringify(results));
-        }
-    }); */
 
     connection.query('UPDATE `Member` SET `email` = ? WHERE `email` = ?', [req.body.newEmail, q1], function(error, results, fields) {
         if (error) {

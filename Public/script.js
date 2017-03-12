@@ -33,10 +33,13 @@ app.config(function($routeProvider) {
         .when("/New_Sale", {
             templateUrl: "Page/New_Sale.html"
         })
-
         .when("/My_Profile", {
             templateUrl: "Page/My_Profile.html"
         })
+        .when("/Change_Pass", {
+            templateUrl: "Page/Change_Pass.html"
+        })
+
 });
 
 $(document).ready(function() {
@@ -629,6 +632,55 @@ function signOut() {
 
 
 // Edit profile functions
+
+var verifyPass;
+function changePassword(){
+    var email = getCookieValue("email");
+    $.ajax({
+        url: "getProfile",
+        type: 'POST',
+        cache: false,
+        data: {
+            email: email,
+        },
+        success: function(result) {
+            var q = JSON.parse(result);
+            window.location.hash = "Change_Pass";
+            verifyPass = q[0].password;
+        }
+    })
+}
+
+function updatePassword(){
+    var email = getCookieValue("email");
+    var oldPass = $("#passwordForm .oldPass").val();
+    var newPass = $("#passwordForm .newPass").val();
+    var newPassRep = $("#passwordForm .newPassRep").val();
+    if(oldPass != verifyPass){
+        alert("Old password does not match");
+    }else if(newPass.length == 0 || newPassRep.length == 0){
+        alert("Please enter a valid password");
+    }else if(newPass != newPassRep){
+        alert("New passwords do not match");
+    }else if(newPass == oldPass){
+        alert("New password cannot be the same as old password");
+    }else{
+        $.ajax({
+            url: "updatePassword",
+            type: 'POST',
+            cache: false,
+            data: {
+                email: email,
+                newPass: newPass
+            },
+            success: function(result) {
+                console.log("success");
+                window.location.hash = "My_Profile";
+            }
+        })
+    }
+}
+
 function changeFirstName() {
     var email = getCookieValue("email");
     var fName = prompt("Enter your first name:", document.getElementById("firstName").innerHTML);
