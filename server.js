@@ -319,6 +319,34 @@ app.post('/upload', function(req, res) {
 
 });
 
+// ------------------------- DELETE PROFILE SCRIPT -------------------------//
+
+app.post("/deleteProfile", function(req, res){
+    var q1 = req.body.email;
+    
+    connection.query('DELETE FROM `Member` WHERE  `email` = "' + q1 + '"', function(error, results, fields) {
+        if (error) {
+            res.end(error.code)
+        } else {
+            res.end(JSON.stringify(results));
+        }
+    });
+});
+
+app.post("/deleteMyItems", function(req, res) {
+
+    var email = "" + req.body.email;
+
+    console.log("deleting items associated with: " + email)
+    connection.query('DELETE FROM `Item` WHERE `email` = "' + email + '"', function(error, results, fields) {
+        if (error) {
+            res.end(error.code)
+        } else {
+            res.end("Successfully deleted stuff");
+        }
+    });
+});
+
 
 // ------------------------- SALE EDIT SCRIPT -------------------------//
 

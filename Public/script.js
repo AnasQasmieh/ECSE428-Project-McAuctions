@@ -751,3 +751,35 @@ function changeEmail() {
         })
     }
 }
+function deleteProfile(){
+    var email = getCookieValue("email");
+    if(confirm("Are you sure you want to delete your profile? All of your saved information including postings will be deleted as well.")){
+        $.ajax({
+            url:"deleteMyItems",
+            type: 'POST',
+            cache: false,
+            data: {
+                email: email,
+            },
+
+            success: function(result) {
+                console.log(result);
+            }
+        })
+        $.ajax({
+            url:"deleteProfile",
+            type: 'POST',
+            cache: false,
+            data: {
+                email: email,
+            },
+
+            success: function(result) {
+                console.log(result);
+                alert("Profile deleted. We're sorry to see you go.");
+            }
+        })
+
+        signOut();  
+    } 
+}
