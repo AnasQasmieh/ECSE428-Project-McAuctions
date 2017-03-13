@@ -159,7 +159,7 @@ function displayItems(count) {
     }
 }
 
-function getItems(category) {
+function getItems(category) { // handles category
     $.ajax({
         url: "getItems",
         type: 'POST',
