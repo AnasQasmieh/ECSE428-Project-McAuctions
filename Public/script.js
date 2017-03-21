@@ -90,13 +90,13 @@ function omniSearch() {
 }
 
 function bid(b) {
-    parent = b.parentNode.parentNode;
+    parent = b.parentNode;
     currentPrice = $(parent).find(".price").html();
     newPrice = $(parent).find(".newPrice").val();
     minPrice = Math.ceil(currentPrice * 105 / 100);
     itemID = $(b).attr('name');
     buyer = getCookieValue("email");
-    if (minPrice > newPrice) {
+    if (minPrice > newPrice && $(parent).find(".bid").val() != 'Buy') {
         alert("The minimum bid is: \n" + minPrice + "\nYour offer has been refused");
     } else {
         console.log("c=" + currentPrice + "--n=" + newPrice + "--id=" + itemID + "--buyer=" + buyer);
@@ -153,7 +153,14 @@ function displayItems(count) {
         $(".itemWrapper:last  .date").html(getItemDateString(item));
         $(".itemWrapper:last  .bid").attr('name', item.itemID);
         if (item.type == "fixed") {
-            $(".itemWrapper:last  .auction").html("");
+            console.log(item.price);
+
+                var x = 1 + item.price - 1;
+                console.log(x);
+              $(".itemWrapper:last  .newPrice").attr('value', x);
+              $(".itemWrapper:last  .newPrice").css('background', 'red');
+              $(".itemWrapper:last  .bid").val('Buy');
+             $(".itemWrapper:last  .auction").hide();
         }
         count--;
     }
@@ -430,6 +437,7 @@ function viewBuyers(b){
                console.log(r);
 
                var s = "Buyers:\n"
+               if(r.length<1) return alert("Nobody made an offer on this item\n\n Sorry, maybe later");
                for(var i = 0 ; i < r.length; i ++){
                 s= s+ r[i].email + " : " + r[i].price + " $ \n";
                }
