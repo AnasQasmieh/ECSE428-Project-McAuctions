@@ -9,36 +9,36 @@ var app = angular.module("myApp", ["ngRoute"]);
 
 app.config(function($routeProvider) {
     $routeProvider
-        .when("/", {
-            templateUrl: "Page/Home.html"
-        })
-        .when("/Advanced_Search", {
-            templateUrl: "Page/Advanced_Search.html"
-        })
-        .when("/About", {
-            templateUrl: "Page/About.html"
-        })
-        .when("/My_Sales", {
-            templateUrl: "Page/My_Sales.html"
-        })
-        .when("/Sign_In", {
-            templateUrl: "Page/Sign_In.html"
-        })
-        .when("/Sign_Up", {
-            templateUrl: "Page/Sign_Up.html"
-        })
-        .when("/Search_Results", {
-            templateUrl: "Page/Search_Results.html"
-        })
-        .when("/New_Sale", {
-            templateUrl: "Page/New_Sale.html"
-        })
-        .when("/My_Profile", {
-            templateUrl: "Page/My_Profile.html"
-        })
-        .when("/Change_Pass", {
-            templateUrl: "Page/Change_Pass.html"
-        })
+    .when("/", {
+        templateUrl: "Page/Home.html"
+    })
+    .when("/Advanced_Search", {
+        templateUrl: "Page/Advanced_Search.html"
+    })
+    .when("/About", {
+        templateUrl: "Page/About.html"
+    })
+    .when("/My_Sales", {
+        templateUrl: "Page/My_Sales.html"
+    })
+    .when("/Sign_In", {
+        templateUrl: "Page/Sign_In.html"
+    })
+    .when("/Sign_Up", {
+        templateUrl: "Page/Sign_Up.html"
+    })
+    .when("/Search_Results", {
+        templateUrl: "Page/Search_Results.html"
+    })
+    .when("/New_Sale", {
+        templateUrl: "Page/New_Sale.html"
+    })
+    .when("/My_Profile", {
+        templateUrl: "Page/My_Profile.html"
+    })
+    .when("/Change_Pass", {
+        templateUrl: "Page/Change_Pass.html"
+    })
 
 });
 
@@ -117,21 +117,21 @@ function bid(b) {
 }
 
 function moneyEarned(){
-$.ajax({
+    $.ajax({
         url: "moneyEarned",
         type: 'POST',
         cache: false,
         data:{
             email: getCookieValue("email")
         },
-       
+        
         success: function(result) {
-           
-           alert("you have earned:"+result+"$ using McAuction");
-       }
-           
+         
+         alert("you have earned:"+result+"$ using McAuction");
+     }
+     
 
-    });
+ });
 }
 
 function displayCategory(category) {
@@ -151,16 +151,18 @@ function displayItems(count) {
         $(".itemWrapper:last  .img1").attr('src', item.img1);
 
         $(".itemWrapper:last  .date").html(getItemDateString(item));
+        $(".itemWrapper:last  .send").attr('href', "mailto:" + item.email + "?subject="
+            + "Interest in " + item.title);
         $(".itemWrapper:last  .bid").attr('name', item.itemID);
         if (item.type == "fixed") {
             console.log(item.price);
 
-                var x = 1 + item.price - 1;
-                console.log(x);
-              $(".itemWrapper:last  .newPrice").attr('value', x);
-              $(".itemWrapper:last  .newPrice").css('background', 'red');
-              $(".itemWrapper:last  .bid").val('Buy');
-             $(".itemWrapper:last  .auction").hide();
+            var x = 1 + item.price - 1;
+            console.log(x);
+            $(".itemWrapper:last  .newPrice").attr('value', x);
+            $(".itemWrapper:last  .newPrice").css('background', 'red');
+            $(".itemWrapper:last  .bid").val('Buy');
+            $(".itemWrapper:last  .auction").hide();
         }
         count--;
     }
@@ -214,16 +216,16 @@ function loadMyItems() {
                 $(".price:eq(" + i + ")").html(q[i].price + " CA$ ");
                 $(".itemwrapper:eq(" + i + ")  .date").html(getItemDateString(q[i]));
                 $(".itemwrapper:eq(" + i + ")  .buyer").html(q[i].buyer);
-               if(q[i].sold){
-               $(".itemwrapper:eq(" + i + ")  .msg").html("<h4>sold</h4>")
-                $(".itemwrapper:eq(" + i + ")  .soldButton").hide();
-               }
-                if (q[i].type == "fixed") {
-                    $(".auction:eq(" + i + ")").html("");
-                }
+                if(q[i].sold){
+                 $(".itemwrapper:eq(" + i + ")  .msg").html("<h4>sold</h4>")
+                 $(".itemwrapper:eq(" + i + ")  .soldButton").hide();
+             }
+             if (q[i].type == "fixed") {
+                $(".auction:eq(" + i + ")").html("");
             }
         }
-    });
+    }
+});
 }
 
 function getItemDateString(item) {
@@ -361,8 +363,6 @@ function editDescription(b) {
     }
 }
 
-
-
 function beginEditingSale(b) {
     console.log("" + $(b).attr('name'));
     var itemID = $(b).attr('name');
@@ -371,8 +371,6 @@ function beginEditingSale(b) {
     document.getElementById("updateSaleForm").style.display = "block";
     document.getElementById("myFixedItemHolder").style.display = "none";
 }
-
-
 
 function removeMySale(b) {
     console.log("" + $(b).attr('name'));
@@ -416,35 +414,32 @@ function markSold(b){
     });
 }
 
-
-
-
 function viewBuyers(b){
- console.log("" + $(b).attr('name'));
-    var itemID = $(b).attr('name');
-    $.ajax({
-        url: "getBuyers",
-        type: 'POST',
-        cache: false,
-        data: {
-            itemID: itemID
-        },
-        success: function(result) {
-            if (result == "success") {
-              
-            } else {
-               var r = JSON.parse(result);
-               console.log(r);
+   console.log("" + $(b).attr('name'));
+   var itemID = $(b).attr('name');
+   $.ajax({
+    url: "getBuyers",
+    type: 'POST',
+    cache: false,
+    data: {
+        itemID: itemID
+    },
+    success: function(result) {
+        if (result == "success") {
+          
+        } else {
+         var r = JSON.parse(result);
+         console.log(r);
 
-               var s = "Buyers:\n"
-               if(r.length<1) return alert("Nobody made an offer on this item\n\n Sorry, maybe later");
-               for(var i = 0 ; i < r.length; i ++){
-                s= s+ r[i].email + " : " + r[i].price + " $ \n";
-               }
-               alert(s);
-            }
+         var s = "Buyers:\n"
+         if(r.length<1) return alert("Nobody made an offer on this item\n\n Sorry, maybe later");
+         for(var i = 0 ; i < r.length; i ++){
+            s= s+ r[i].email + " : " + r[i].price + " $ \n";
         }
-    });
+        alert(s);
+    }
+}
+});
 
 
 }
@@ -629,7 +624,6 @@ function getProfile() {
     })
 }
 
-
 function signOut() {
     document.cookie = "";
     $(".postLogin").fadeOut(100);
@@ -637,7 +631,6 @@ function signOut() {
     window.location.hash = ''; //send to homepage after logout
     window.location.reload; //reload page
 }
-
 
 // Edit profile functions
 
@@ -759,6 +752,7 @@ function changeEmail() {
         })
     }
 }
+
 function deleteProfile(){
     var email = getCookieValue("email");
     if(confirm("Are you sure you want to delete your profile? All of your saved information including postings will be deleted as well.")){
