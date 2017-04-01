@@ -39,6 +39,32 @@ app.post("/getItems", function(req, res) {
         });
     };
 });
+
+app.post("/getItemsByPrice", function(req, res) {
+
+    var category = "" + req.body.category;
+    var asc_desc = "" + req.body.asc_desc;
+    if (category == "any") {
+        connection.query('SELECT * FROM `Item` ORDER BY price '+ asc_desc+';', function(error, results, fields) {
+            if (error) {
+                res.end(error.code)
+            } else {
+                res.end(JSON.stringify(results));
+
+            }
+        });
+    } else {
+        connection.query('SELECT * FROM `Item`WHERE `category` = "' + category + '" ORDER BY price '+ asc_desc+';', function(error, results, fields) {
+            if (error) {
+                res.end(error.code)
+            } else {
+                res.end(JSON.stringify(results));
+
+            }
+        });
+    };
+});
+
 app.post("/addItem", function(req, res) {
 
     var email = "" + req.body.email;

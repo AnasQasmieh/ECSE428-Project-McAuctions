@@ -135,6 +135,7 @@ function moneyEarned(){
 }
 
 function displayCategory(category) {
+    document.cookie = "category=" + category + ";";
     getItems(category);
 }
 
@@ -166,6 +167,25 @@ function displayItems(count) {
         }
         count--;
     }
+}
+
+function displayByPrice(asc_desc) {
+    $.ajax({
+        url: "getItemsByPrice",
+        type: 'POST',
+        cache: false,
+        data: {
+            asc_desc: asc_desc,
+            category: getCookieValue("category")
+        },
+        success: function(result) {
+            // console.log(result);
+            displayedItems = JSON.parse(result);
+            $(".itemHolder").html("");
+            displayItems(15);
+        }
+
+    });
 }
 
 function getItems(category) { // handles category
