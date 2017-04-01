@@ -2,7 +2,7 @@ Feature: Notify Account if Item not marked as sold for 30 days
 
 As a Seller
 I want to be notified when an item I posted is not sold for 30 days
-So that I know 
+So that I can decide to remove or modify the post
 
 Scenario: I see a notification for an item not sold for 30 days
 

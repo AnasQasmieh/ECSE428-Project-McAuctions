@@ -11,19 +11,22 @@
     <div class="itemWrapper">
         <span id="title-id" class="title"></span>
 		<input type="button" value="Edit Title" name="someID" class="bid" onclick="editTitle(this)"> <br>
+		CREATED ON: <span class="created"></span> <br>
         <img class="img1" src="" height="200" width="auto" alt="Image preview..."> <br>
-        <span id="price-id" class="price"></span> Category : <span class="category"></span> <br> Description <span id="description-id" class="description"></span> <br>
+        <span id="price-id" class="price"></span> <br> CATEGORY: <span class="category"></span> <br> DESCRIPTION: <span id="description-id" class="description"></span> <br>
         <span class="auction">
-		End Date : <span class="date"></span> <br> Buyer : <span class="buyer">none</span>
+		END DATE: <span class="date"></span> <br> BUYER: <span class="buyer">none</span>
         </span>
         <br>
 		<input type="button" value="Edit Price" name="someID" class="bid" onclick="editPrice(this)">
 		<input type="button" value="Edit Description" name="someID" class="bid" onclick="editDescription(this)"> <br>
-        <input type="button" value="Edit Sale" name="someID" class="bid" onclick="beginEditingSale(this)">
-        <br>
+        <!-- <input type="button" value="Edit Sale" name="someID" class="bid" onclick="beginEditingSale(this)">
+        <br> -->
         <input type="button" value="Remove Sale" name="someID" class="bid" onclick="removeMySale(this)">
         <input type="button" value="view buyers" name="someID" class="bid" onclick="viewBuyers(this)">
         <input type="button" value="Mark as sold" name="someID" class="bid soldButton" onclick="markSold(this)">
+		<br><br>
+		<p class="notification" style="display: none; color: red;">This Item is Older Than 30 Days</p>
         <p class="msg" style="color: red;"></p>
         <hr>
     </div>

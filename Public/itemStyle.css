@@ -12,6 +12,11 @@
     /*float: right;*/
 }
 
+#myFixedItemHolder .notification {
+    font-size: 1.5em;
+    /*float: right;*/
+}
+
 .send {
 		clear: both;
 		background-color: white;

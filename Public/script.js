@@ -217,15 +217,26 @@ function loadMyItems() {
                 $(".itemwrapper:eq(" + i + ")  .date").html(getItemDateString(q[i]));
                 $(".itemwrapper:eq(" + i + ")  .buyer").html(q[i].buyer);
                 if(q[i].sold){
-                 $(".itemwrapper:eq(" + i + ")  .msg").html("<h4>sold</h4>")
-                 $(".itemwrapper:eq(" + i + ")  .soldButton").hide();
-             }
-             if (q[i].type == "fixed") {
-                $(".auction:eq(" + i + ")").html("");
-            }
-        }
-    }
-});
+					$(".itemwrapper:eq(" + i + ")  .msg").html("<h4>sold</h4>")
+					$(".itemwrapper:eq(" + i + ")  .soldButton").hide();
+				}
+				if (q[i].type == "fixed") {
+					$(".auction:eq(" + i + ")").html("");
+				}
+				
+				var createDate = new Date(q[i].created);
+				var displayDate = createDate.toISOString().slice(0,10).toString();
+				$(".itemwrapper:eq(" + i + ")  .created").html(displayDate);
+				
+				var todayDateMinus30 = new Date();
+				todayDateMinus30.setDate(todayDateMinus30.getDate() - 30);
+				if(todayDateMinus30 >= createDate) {
+					$(".itemwrapper:eq(" + i + ") .notification").show();
+				}
+				
+			}
+		}
+	});
 }
 
 function getItemDateString(item) {
