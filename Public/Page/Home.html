@@ -1,24 +1,58 @@
-<div>
+<style>
+   body {
+    }
+    .button {
+        background-color: #4CAF50;
+        border: none;
+        color: white;
+        padding: 2px 16px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 2px 0px;
+        cursor: pointer;
+    }
+    .priceHolder .button{
+        background-color: #555555;
+        padding: 1px 32px;
+    }
+    .title {
+        font-size: 16px;
+        font-weight: bold;
+    }
+    .bid{
+        border: none;
+        background-color: #FFCC00;
+        padding: 2px 16px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+</style>
+<div class="sortingFields">
+
     <div class="categoryHolder">
-        <input type="button" value="any" onclick="displayCategory('any')">
-        <input type="button" value="miscellaneous" onclick="displayCategory('miscellaneous')">
-        <input type="button" value="vehicle" onclick="displayCategory('vehicle')">
-        <input type="button" value="appartment" onclick="displayCategory('appartment')">
-        <input type="button" value="sport" onclick="displayCategory('sport')">
-        <input type="button" value="clothing" onclick="displayCategory('clothing')">
-        <input type="button" value="textbook" onclick="displayCategory('textbook')">
-        <input type="button" value="furniture" onclick="displayCategory('furniture')">
-        <input type="button" value="electronic" onclick="displayCategory('electronic')">
+
+        <input type="button" class="button" value="Any" onclick="displayCategory('any')">
+        <input type="button" class="button" value="Miscellaneous" onclick="displayCategory('miscellaneous')">
+        <input type="button" class="button" value="Vehicle" onclick="displayCategory('vehicle')">
+        <input type="button" class="button" value="Apartment" onclick="displayCategory('appartment')">
+        <input type="button" class="button" value="Sport" onclick="displayCategory('sport')">
+        <input type="button" class="button" value="Clothing" onclick="displayCategory('clothing')">
+        <input type="button" class="button" value="Textbook" onclick="displayCategory('textbook')">
+        <input type="button" class="button" value="Furniture" onclick="displayCategory('furniture')">
+        <input type="button" class="button" value="Electronic" onclick="displayCategory('electronic')">
+    </div>
+    <div class="priceHolder">
+        <label> Sort by Price: </label>
+        <button type="button" class="button" onclick="displayByPrice('DESC')">Lowest First</button>
+        <button type="button" class="button"onclick="displayByPrice('ASC')">Highest First</button>
     </div>
     <hr>
 </div>
 
-<span>
-    <label> Sort by Price: </label>
-    <button type="button" onclick="displayByPrice('DESC')">Lowest First</button>
-    <button type="button" onclick="displayByPrice('ASC')">Highest First</button>
 
-</span>
 
 <div id="itemWrapperTemplate" style="display:none">
     <!-- <div id="itemWrapperTemplate" > -->
