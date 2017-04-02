@@ -253,6 +253,11 @@ function loadMyItems() {
 				if(todayDateMinus30 >= createDate) {
 					$(".itemwrapper:eq(" + i + ") .notification").show();
 				}
+                //remove item after expiry
+                var daysToExpire = getDaysTo(q[i].date.split("T")[0]);
+                if (daysToExpire <= 0){
+                    removeMySale(q[i])
+                }
 				
 			}
 		}
