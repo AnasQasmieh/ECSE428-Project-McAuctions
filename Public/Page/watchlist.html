@@ -1,0 +1,38 @@
+
+<hr>
+<button onclick="loadWatchlist()">Refresh</button>
+<hr>
+<p id="demo"></p>
+<div id="itemWrapperTemplate" style="display:none">
+    <!-- <div id="itemWrapperTemplate" > -->
+    <div class="itemWrapper">
+        <div class="saleImage">
+            <img class="img1" src="" height="200" width="auto" alt="Image preview..." align="left">
+        </div>
+        <div class="saleInformation">
+            <span class="title">title</span><br>
+            <span class="price">0</span>CA$ <br>
+            <span class="owner">owner</span><br>
+            <div class="descriptionBox">
+                <p class="description"></p>
+            </div> <br>
+            <span class="auction">
+    			End Date : <span class="date"></span> <br>
+            <input type="number"  value='78' name="price" min="0" class="newPrice"> CA$
+            </span>
+            <input id='buyButton' type="button" value="Make Offer" name="someID" class="bid" onclick="bid(this)">
+            <br>
+            <span>
+                <a class="send" action="mailto:someone@example.com"
+                   method="post" enctype="text/plain">
+                    Send Message
+                </a>
+            </span>
+        </div>
+    </div>
+    <br style="clear:both;">
+    <hr>
+</div>
+
+<div class="itemHolder">
+</div>

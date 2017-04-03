@@ -24,6 +24,7 @@ app.post("/getItems", function(req, res) {
             if (error) {
                 res.end(error.code)
             } else {
+                console.log(JSON.stringify(results));
                 res.end(JSON.stringify(results));
 
             }
@@ -85,7 +86,25 @@ app.post("/addItem", function(req, res) {
         // if(error){throw error};
     });
 });
-
+app.post("/watchlist", function(req, res) {
+	
+	var itemID = req.body.itemID;
+	
+	var email = "" + req.body.email;
+	console.log("item id is "+itemID +email);
+	connection.query(
+	    'INSERT INTO `Watchlist` (`itemID`,`email`) VALUES ("'+itemID+'","'+email+'")',
+        function(error,results,fields){
+		  if (error) {
+			  res.end(error.code)
+		  }else{
+			  res.end("success");
+			
+		  }
+		  
+	  }
+	);
+});
 app.post("/bid", function(req, res) {
 
     var itemID = "" + req.body.itemID;
@@ -96,7 +115,7 @@ app.post("/bid", function(req, res) {
             function(error,results,fields){
                   if (error) {
             res.end(error.code)
-        } 
+        }
 
             }
         );
@@ -153,7 +172,49 @@ app.post("/signin", function(req, res) {
         }
     });
 });
-
+app.post("/myWatchlist", function(req, res) {
+	var q1 = req.body.email;
+	var list=[];
+	result = connection.query('SELECT * FROM `Watchlist` INNER JOIN `Item` ON `Watchlist`.`itemID` = `Item`.`itemID` WHERE `Watchlist`.`email` = "' + q1 + '"', function(error, results, fields) {
+		if (error) {
+			console.log("tehre was an error"+error);
+			res.end(error.code);
+			
+		} else {
+		    
+		    itemids = [];
+			item = JSON.stringify(results);
+			console.log("<i watching \n"+item);
+			
+			res.end(item);
+//				        list.push(item);
+//					    console.log(i+"<i watching \n"+item);
+//		    for(var i =0;i<results.length;i++) {
+//			    itemids[i] = results[i].itemID;
+//			    itemQ = connection.query('SELECT * FROM `Item` WHERE `itemID` = "' + results[i].itemID + '"', function(error, results, fields) {
+//				    if (error) {
+//					    res.end(error.code);
+//				    } else {
+//
+//				        item = JSON.stringify(results);
+//				        list.push(item);
+//					    console.log(i+"<i watching \n"+item);
+//					    console.log("listlength ~~~~~\n "+list.length);
+//
+//
+//
+//				    }
+//			    });
+//		    }
+			
+			
+			
+		}
+		
+	});
+	
+	
+});
 app.post("/loadMyItems", function(req, res) {
     var q1 = req.body.email;
 

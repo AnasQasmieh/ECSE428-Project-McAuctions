@@ -12,6 +12,9 @@ app.config(function($routeProvider) {
     .when("/", {
         templateUrl: "Page/Home.html"
     })
+      .when("/myWatchlist", {
+	      templateUrl: "Page/watchlist.html"
+      })
     .when("/Advanced_Search", {
         templateUrl: "Page/Advanced_Search.html"
     })
@@ -88,13 +91,52 @@ function omniSearch() {
 
     });
 }
-
+function watchlist(b)
+{
+	itemID = $(b).attr('name');
+	console.log(itemID);
+	buyer = getCookieValue("email");
+	console.log(buyer);
+	console.log("--id=" + itemID + "--buyer=" + buyer);
+	
+	$.ajax({
+	url: "watchlist",
+	type: 'POST',
+	cache: false,
+	data:{
+	    itemID: itemID,
+		email: buyer
+	},
+	
+	success: function(result) {
+		$("#watchlist").hide();
+		alert("the item was added to your watchlist");
+	}
+	
+    });
+}
+function loadWatchlist(){
+	console.log("Loading the watchlist");
+	$.ajax({
+		url: "myWatchlist",
+		type: 'POST',
+		cache: false,
+		data: {
+			email: getCookieValue("email")
+		},success: function(result) {
+            console.log("showing results"+result);
+			displayedItems = JSON.parse(result);
+			$(".itemHolder").html("");
+			displayItems(15);
+		}});
+}
 function bid(b) {
     parent = b.parentNode;
     currentPrice = $(parent).find(".price").html();
     newPrice = $(parent).find(".newPrice").val();
     minPrice = Math.ceil(currentPrice * 105 / 100);
     itemID = $(b).attr('name');
+    console.log(itemID);
     buyer = getCookieValue("email");
     if (minPrice > newPrice && $(parent).find(".bid").val() != 'Buy') {
         alert("The minimum bid is: \n" + minPrice + "\nYour offer has been refused");
